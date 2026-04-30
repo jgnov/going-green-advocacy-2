@@ -1,0 +1,66 @@
+# Going Green Advocacy 2 — Deploy to GitHub Pages (rorgny2.goinggreen.earth)
+#
+# One-time GitHub setup (new repo):
+# 1. Create an empty repository (e.g. going-green-advocacy-2) under your account/org.
+# 2. From this project folder: git remote add origin <repo-url> && git push -u origin main
+#    Or use scripts/connect-new-github-remote.sh
+# 3. Repo Settings → Secrets and variables → Actions — add:
+#    OPEN_STATES_API_KEY, EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID
+#    EMAILJS_ADMIN_TEMPLATE_ID (optional), EMAILJS_BCC_EMAIL (optional),
+#    SUPABASE_URL, SUPABASE_ANON_KEY (optional, for admin panel)
+# 4. Settings → Pages → Build and deployment → Source: GitHub Actions
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Create .env from secrets
+        run: |
+          echo "OPEN_STATES_API_KEY=${{ secrets.OPEN_STATES_API_KEY }}" >> .env
+          echo "EMAILJS_PUBLIC_KEY=${{ secrets.EMAILJS_PUBLIC_KEY }}" >> .env
+          echo "EMAILJS_SERVICE_ID=${{ secrets.EMAILJS_SERVICE_ID }}" >> .env
+          echo "EMAILJS_TEMPLATE_ID=${{ secrets.EMAILJS_TEMPLATE_ID }}" >> .env
+          echo "EMAILJS_ADMIN_TEMPLATE_ID=${{ secrets.EMAILJS_ADMIN_TEMPLATE_ID }}" >> .env
+          echo "EMAILJS_BCC_EMAIL=${{ secrets.EMAILJS_BCC_EMAIL }}" >> .env
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env
+
+      - run: npm run build
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

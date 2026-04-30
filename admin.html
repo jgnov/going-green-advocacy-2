@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Email Sent Statistics | RORGNY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ror-blue:   #003087;
+      --ror-green:   #00A651;
+      --ror-teal:   #007B5E;
+      --ror-sky:    #E8F4FD;
+      --near-black: #1A1A2E;
+      --gray:       #6B7280;
+      --border:     #D1D5DB;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      color: var(--near-black);
+      background: var(--ror-sky);
+      min-height: 100vh;
+      padding: 32px 24px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .admin-header {
+      background: var(--ror-blue);
+      color: white;
+      padding: 28px 32px;
+    }
+    .admin-header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .admin-header p {
+      font-size: 14px;
+      opacity: 0.85;
+    }
+    .admin-header a {
+      color: var(--ror-green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .admin-header a:hover { text-decoration: underline; }
+    .login-panel {
+      padding: 48px 32px;
+    }
+    .login-panel h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: var(--near-black);
+    }
+    .login-panel input {
+      width: 100%;
+      max-width: 320px;
+      padding: 12px 16px;
+      font-size: 16px;
+      font-family: inherit;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    .login-panel button {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      background: var(--ror-green);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .login-panel button:hover { opacity: 0.9; }
+    .login-error {
+      color: #dc2626;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      padding: 24px 32px;
+      border-bottom: 1px solid var(--border);
+      background: #F9FAFB;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-card .number {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--ror-green);
+      line-height: 1.2;
+    }
+    .stat-card .label {
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      padding: 24px 32px 32px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      background: var(--ror-blue);
+      color: white;
+      font-weight: 700;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    tr:hover { background: #F9FAFB; }
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--gray);
+    }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+    .note {
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 20px;
+      padding: 16px;
+      background: #F3F4F6;
+      border-radius: 8px;
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="admin-header">
+    <h1>Email Sent Statistics</h1>
+    <p><a href="index.html">← Back to campaign</a><span id="logout-wrap" class="hidden"> · <a href="#" id="logout-link">Log out</a></span></p>
+  </div>
+
+  <div id="login-panel" class="login-panel">
+    <h2>Enter password to view admin</h2>
+    <input type="password" id="admin-password" placeholder="Password" autocomplete="current-password" />
+    <br />
+    <button type="button" id="login-btn">Log in</button>
+    <div id="login-error" class="login-error hidden"></div>
+  </div>
+
+  <div id="dashboard" class="hidden">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="number" id="total-count">0</div>
+        <div class="label">Total emails sent</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="unique-senders">0</div>
+        <div class="label">Unique senders</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="unique-recipients">0</div>
+        <div class="label">Unique recipients</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Sent by</th>
+            <th>Email</th>
+            <th>To (names)</th>
+            <th>To (emails)</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="sends-tbody">
+        </tbody>
+      </table>
+      <div class="empty-state" id="empty-state" style="display:none">
+        <div class="icon">📭</div>
+        <p id="empty-msg">No emails sent yet.</p>
+      </div>
+      <p class="note">Data is stored in Supabase and synced when users send messages.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const CONFIG = {
+    SUPABASE_URL:   '__SUPABASE_URL__',
+    SUPABASE_ANON_KEY: '__SUPABASE_ANON_KEY__',
+  };
+
+  const SESSION_KEY = 'ror_admin';
+  const SESSION_PW_KEY = 'ror_admin_pw';
+
+  function isLoggedIn() {
+    return sessionStorage.getItem(SESSION_KEY) === '1';
+  }
+
+  function setLoggedIn(password) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    sessionStorage.setItem(SESSION_PW_KEY, password);
+  }
+
+  function clearSession() {
+    sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(SESSION_PW_KEY);
+  }
+
+  function renderDashboard(data) {
+    document.getElementById('total-count').textContent = data.length;
+
+    const senderEmails = new Set(data.map(d => d.email));
+    document.getElementById('unique-senders').textContent = senderEmails.size;
+
+    const recipients = new Set();
+    data.forEach(d => {
+      const emails = (d.recipient_emails || '').split(/[,\s]+/).filter(Boolean);
+      if (emails.length) {
+        emails.forEach(e => recipients.add(e.trim()));
+      } else {
+        (d.legislators || '').split(' and ').forEach(r => r.trim() && recipients.add(r.trim()));
+      }
+    });
+    document.getElementById('unique-recipients').textContent = recipients.size;
+
+    const tbody = document.getElementById('sends-tbody');
+    const emptyState = document.getElementById('empty-state');
+
+    if (data.length === 0) {
+      tbody.innerHTML = '';
+      emptyState.style.display = 'block';
+      document.getElementById('empty-msg').textContent = 'No emails sent yet. Data syncs from Supabase when users send messages.';
+    } else {
+      emptyState.style.display = 'none';
+      tbody.innerHTML = data.map((row, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${escapeHtml(row.name || '—')}</td>
+          <td>${escapeHtml(row.email || '—')}</td>
+          <td>${escapeHtml(row.legislators || '—')}</td>
+          <td>${escapeHtml(row.recipient_emails || '—')}</td>
+          <td>${row.ts ? new Date(row.ts).toLocaleString() : '—'}</td>
+        </tr>
+      `).join('');
+    }
+  }
+
+  function escapeHtml(s) {
+    const div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  async function loadData(password) {
+    if (CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY && password) {
+      try {
+        const url = CONFIG.SUPABASE_URL.replace(/\/$/, '') + '/functions/v1/admin-sends';
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + CONFIG.SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ password }),
+        });
+        if (res.ok) {
+          return await res.json();
+        }
+        const errBody = await res.json().catch(() => ({}));
+        if (res.status === 401) return null;
+        return { serverError: errBody.error || 'Server error (' + res.status + ')' };
+      } catch (e) {}
+    }
+    return JSON.parse(localStorage.getItem('ror_sends') || '[]');
+  }
+
+  document.getElementById('login-btn').addEventListener('click', async function() {
+    const pw = document.getElementById('admin-password').value;
+    const errEl = document.getElementById('login-error');
+    if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) {
+      errEl.textContent = 'Admin not configured. Set up Supabase and deploy the admin-sends Edge Function.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+    if (!pw.trim()) {
+      errEl.textContent = 'Please enter the password.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+    errEl.classList.add('hidden');
+    const passwordToSend = pw.trim();
+    const data = await loadData(passwordToSend);
+    if (data === null) {
+      errEl.textContent = 'Incorrect password.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+    if (data && data.serverError) {
+      errEl.textContent = data.serverError;
+      errEl.classList.remove('hidden');
+      return;
+    }
+    setLoggedIn(pw);
+    document.getElementById('login-panel').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('logout-wrap').classList.remove('hidden');
+    renderDashboard(data);
+  });
+
+  document.getElementById('admin-password').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('login-btn').click();
+  });
+
+  document.getElementById('logout-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    clearSession();
+    document.getElementById('logout-wrap').classList.add('hidden');
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('login-panel').classList.remove('hidden');
+    document.getElementById('admin-password').value = '';
+    document.getElementById('login-error').classList.add('hidden');
+  });
+
+  if (isLoggedIn()) {
+    const storedPw = sessionStorage.getItem(SESSION_PW_KEY);
+    if (storedPw) {
+      document.getElementById('login-panel').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      document.getElementById('logout-wrap').classList.remove('hidden');
+      loadData(storedPw).then(function(data) {
+        if (data === null || (data && data.serverError)) {
+          clearSession();
+          location.reload();
+        } else {
+          renderDashboard(data);
+        }
+      });
+    } else {
+      clearSession();
+    }
+  }
+})();
+</script>
+
+</body>
+</html>

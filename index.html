@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tell Albany: Fund Children's Literacy | Reach Out and Read of Greater New York</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ror-blue:   #003087;
+      --ror-green:  #00A651;
+      --ror-teal:   #007B5E;
+      --ror-sky:    #E8F4FD;
+      --ror-mint:   #E6F7EE;
+      --ror-gold:   #F5A623;
+      --white:      #FFFFFF;
+      --near-black: #1A1A2E;
+      --gray:       #6B7280;
+      --light-gray: #F3F4F6;
+      --border:     #D1D5DB;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      color: var(--near-black);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── PAGE SPLIT ── */
+    .page-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    .header-left {
+      background: var(--ror-blue);
+      padding: 40px 48px 60px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 50vh;
+    }
+
+    .header-left::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: rgba(0,166,81,0.18);
+      pointer-events: none;
+    }
+
+    .header-left::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 360px; height: 360px;
+      border-radius: 50%;
+      background: rgba(0,166,81,0.10);
+      pointer-events: none;
+    }
+
+    .header-right {
+      background: var(--near-black);
+      padding: 36px 48px 60px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .header-right::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: rgba(0,166,81,0.12);
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      padding-bottom: 56px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      text-decoration: none;
+    }
+
+    .nav-logo-img {
+      height: 110px;
+      width: auto;
+      max-width: 420px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* ── HERO CONTENT ── */
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      background: var(--ror-green);
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+      align-self: flex-start;
+    }
+
+    .hero-inner h1 {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(28px, 3.2vw, 52px);
+      font-weight: 900;
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 28px;
+    }
+
+    .hero-inner h1 em {
+      font-style: normal;
+      color: var(--ror-green);
+    }
+
+    .hero-sub {
+      color: rgba(255,255,255,0.80);
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .stat { text-align: left; min-width: 0; }
+
+    .stat-num {
+      font-family: 'Nunito', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--ror-green);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      margin-top: 4px;
+      max-width: 110px;
+      line-height: 1.4;
+    }
+
+    /* ── SECTION LABELS / HEADINGS ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ror-green);
+      margin-bottom: 10px;
+    }
+
+    .section-heading {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(22px, 2.8vw, 32px);
+      font-weight: 700;
+      color: var(--ror-blue);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .section-body {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #374151;
+      margin-bottom: 24px;
+    }
+
+    .header-right .section-heading { color: white; }
+    .header-right .section-label   { color: var(--ror-green); }
+    .header-right .section-body    { color: rgba(255,255,255,0.70); }
+
+    /* ── WHY IT MATTERS ── */
+    .why-section { background: var(--white); }
+
+    .main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .why-card {
+      background: var(--ror-sky);
+      border-radius: 16px;
+      padding: 28px 24px;
+      border-left: 4px solid var(--ror-blue);
+      transition: transform 0.2s ease;
+    }
+
+    .why-card:hover { transform: translateY(-3px); }
+
+    .why-card .why-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .why-card h3 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ror-blue);
+      margin-bottom: 8px;
+    }
+
+    .why-card p {
+      font-size: 14px;
+      line-height: 1.65;
+      color: #4B5563;
+    }
+
+    /* ── FORM ── */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .form-row-address {
+      grid-template-columns: 1fr 100px;
+    }
+
+    .form-group-zip input { max-width: 100%; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.80);
+      letter-spacing: 0.02em;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      color: white;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      width: 100%;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: rgba(255,255,255,0.35);
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--ror-green);
+      background: rgba(255,255,255,0.10);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .email-preview {
+      background: rgba(255,255,255,0.05);
+      border: 1.5px dashed rgba(0,166,81,0.5);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 18px;
+      margin-bottom: 18px;
+    }
+
+    .email-preview-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ror-green);
+      margin-bottom: 10px;
+    }
+
+    .email-preview-text {
+      font-size: 13px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.75);
+      white-space: pre-wrap;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    #recipient-preview {
+      display: block;
+      font-size: 12px;
+      color: rgba(255,255,255,0.50);
+      margin-bottom: 6px;
+    }
+
+    .action-buttons-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+      margin-bottom: 16px;
+    }
+
+    .action-btn {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .preview-btn {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1.5px solid rgba(255,255,255,0.35);
+    }
+
+    .preview-btn:hover {
+      background: rgba(255,255,255,0.18);
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    .send-btn {
+      background: var(--ror-green);
+      color: white;
+      box-shadow: 0 4px 24px rgba(0,166,81,0.35);
+    }
+
+    .send-btn:hover:not(:disabled) {
+      background: var(--ror-teal);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,166,81,0.45);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+
+    .verify-btn {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1.5px solid rgba(255,255,255,0.35);
+    }
+
+    .verify-btn:hover {
+      background: rgba(255,255,255,0.18);
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    .verify-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .address-confirmed {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,166,81,0.15);
+      border: 1.5px solid rgba(0,166,81,0.4);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #6EE7A0;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .address-confirmed .address-check {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ── LEGISLATOR SECTION ── */
+    .legislator-section {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .legislator-label {
+      font-size: 13px;
+      color: var(--ror-green);
+      line-height: 1.4;
+      flex-shrink: 0;
+      width: 200px;
+      margin: 0;
+    }
+    #legislator-area {
+      flex: 1;
+      min-width: 0;
+      max-width: 340px;
+    }
+    /* ── LEGISLATOR CARD ── */
+    .legislator-found {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: rgba(0,166,81,0.10);
+      border: 1.5px solid rgba(0,166,81,0.35);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 10px;
+      margin-bottom: 4px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .legislator-found .leg-icon {
+      width: 36px; height: 36px;
+      background: var(--ror-green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .legislator-found .leg-info h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 2px;
+    }
+
+    .legislator-found .leg-info p {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ── STATUS MESSAGES ── */
+    .status-msg {
+      display: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 14px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .status-msg.success {
+      background: rgba(0,166,81,0.15);
+      border: 1.5px solid rgba(0,166,81,0.4);
+      color: #6EE7A0;
+    }
+
+    .status-msg.error {
+      background: rgba(239,68,68,0.12);
+      border: 1.5px solid rgba(239,68,68,0.35);
+      color: #FCA5A5;
+    }
+
+    .status-msg.loading {
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── SUCCESS SCREEN ── */
+    #success-screen {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    #success-screen .check {
+      width: 72px; height: 72px;
+      background: var(--ror-green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 32px;
+    }
+
+    #success-screen h2 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 14px;
+    }
+
+    #success-screen p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.65);
+      max-width: 400px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    .share-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .share-btn {
+      padding: 11px 20px;
+      border-radius: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s;
+    }
+
+    .share-btn:hover { opacity: 0.85; }
+    .share-btn-copy  { background: rgba(255,255,255,0.12); color: white; }
+    .share-btn-donate { background: var(--ror-green); color: white; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ror-blue);
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    footer a { color: var(--ror-green); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .fade-in:nth-child(1) { animation-delay: 0.1s; }
+    .fade-in:nth-child(2) { animation-delay: 0.2s; }
+    .fade-in:nth-child(3) { animation-delay: 0.3s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      .page-header {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .header-left  { padding: 32px 24px 40px; }
+      .header-right { padding: 40px 24px; }
+      .form-row     { grid-template-columns: 1fr; }
+      .form-row-address { grid-template-columns: 1fr; }
+      .action-buttons-row { flex-direction: column; }
+      .action-btn    { min-width: 100%; }
+      .hero-stats   { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .hero-stats .stat-num { font-size: 24px; }
+      .hero-stats .stat-label { font-size: 10px; max-width: none; }
+      .nav-logo-img { height: 80px; max-width: 300px; }
+      .legislator-section { flex-direction: column; gap: 12px; }
+      .legislator-label { width: 100%; }
+      #legislator-area { max-width: none; }
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Config notice */
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════ PAGE HEADER (SPLIT) ══════════════════ -->
+<div class="page-header">
+
+  <!-- LEFT: Context & headline -->
+  <div class="header-left">
+    <nav class="nav">
+    <a href="https://reachoutandreadnyc.org" class="nav-logo" target="_blank" rel="noopener">
+      <img src="https://reachoutandreadnyc.org/wp-content/themes/elevation_theme/assets/images/logo.png" alt="Reach Out and Read of Greater New York" class="nav-logo-img" />
+    </a>
+    </nav>
+
+    <div class="hero-inner">
+      <span class="hero-eyebrow fade-in">Take Action · New York State Budget for 2026-2027</span>
+      <h1 class="fade-in">Fight for the right to read.</h1>
+      <p class="hero-sub fade-in">
+        New York families need state funding for childhood literacy. With two clicks, you can ask your Assembly Member and State Senator to support Reach Out and Read.
+      </p>
+      <div class="hero-stats">
+        <div class="stat fade-in">
+          <div class="stat-num">1 in 3</div>
+          <div class="stat-label">NYC children start kindergarten behind in language skills</div>
+        </div>
+        <div class="stat fade-in">
+          <div class="stat-num">90%</div>
+          <div class="stat-label">of brain development happens before<br>age 5</div>
+        </div>
+        <div class="stat fade-in">
+          <div class="stat-num">$1</div>
+          <div class="stat-label">in literacy funding saves $7 in remediation costs later</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Action form -->
+  <div class="header-right" id="take-action">
+    <div id="form-wrapper">
+      <div id="test-mode-banner" class="status-msg" style="display:none; margin-bottom:16px; background:rgba(245,166,35,0.2); border-color:rgba(245,166,35,0.5); color:#FCD34D;">
+        &#9888; Test mode: emails will be sent to your test address, not legislators.
+      </div>
+      <div id="config-status-banner" class="status-msg" style="display:none; margin-bottom:16px; font-size:14px;"></div>
+      <p class="section-label">Take Action</p>
+      <h2 class="section-heading">Send your message to Albany</h2>
+      <p class="section-body">
+        Enter your information below. We'll find your Assembly Member and State Senator, and we'll send them a pre-written email on your behalf — in two clicks.
+      </p>
+
+      <form id="advocacy-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first-name">First name</label>
+            <input type="text" id="first-name" placeholder="Jane" required />
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last name</label>
+            <input type="text" id="last-name" placeholder="Smith" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="email">Your email address</label>
+            <input type="email" id="email" placeholder="jane@example.com" required />
+          </div>
+        </div>
+
+        <div class="form-row form-row-address">
+          <div class="form-group">
+            <label for="street-address">Street address</label>
+            <input type="text" id="street-address" placeholder="123 Main St, Apt 4" required />
+          </div>
+          <div class="form-group form-group-zip">
+            <label for="zip-code">Zip code</label>
+            <input type="text" id="zip-code" placeholder="11201" maxlength="5" inputmode="numeric" required />
+          </div>
+        </div>
+
+        <div class="action-buttons-row">
+          <button type="button" class="action-btn verify-btn" id="verify-btn" onclick="verifyAddress()">1. Verify my address</button>
+          <button type="submit" class="action-btn send-btn" id="send-btn" disabled>2. Send email to Albany</button>
+        </div>
+
+        <!-- Address confirmation (shown after successful verification) -->
+        <div class="address-confirmed" id="address-confirmed" style="display:none">
+          <span class="address-check">✓</span>
+          <span id="verified-address-text"></span>
+        </div>
+
+        <!-- Legislator display area -->
+        <div class="legislator-section" id="legislator-section" style="display:none">
+          <p class="legislator-label">Your representatives who will be contacted when you click "Send email to Albany":</p>
+          <div id="legislator-area"></div>
+        </div>
+        <div class="status-msg" id="lookup-status"></div>
+
+        <!-- Email preview -->
+        <div class="email-preview" id="email-preview" style="display:none">
+          <div class="email-preview-label">📧 Email that will be sent</div>
+          <span id="recipient-preview"></span>
+          <div id="recipient-emails-verify" style="display:none; margin-top:8px; font-size:13px; opacity:0.9;"></div>
+          <div class="email-preview-text" id="email-body-preview"></div>
+        </div>
+
+        <div class="status-msg" id="send-status"></div>
+      </form>
+    </div>
+
+    <!-- Success screen -->
+    <div id="success-screen">
+      <div class="check">✅</div>
+      <h2>Your voice has been heard!</h2>
+      <p>
+        Your message has been sent to your Assembly Member and State Senator.
+        Thank you for standing up for children's literacy in New York.
+      </p>
+      <div class="share-row">
+        <button class="share-btn share-btn-copy" onclick="copyLink()">🔗 Copy link to share with others</button>
+        <a class="share-btn share-btn-donate" href="https://reachoutandreadnyc.org/donate/" target="_blank" rel="noopener">📚 Give the gift of books right now with a contribution to Reach Out and Read of Greater New York</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════ WHY IT MATTERS ══════════════════ -->
+<section class="why-section">
+  <main class="main">
+    <p class="section-label">Why It Matters</p>
+    <h2 class="section-heading">Literacy is the foundation of everything.</h2>
+    <p class="section-body">
+      Reach Out and Read of Greater New York trains pediatricians to prescribe books and reading aloud at every well-child visit from birth to age 5. Every New York child deserves a fair start — and Reach Out and Read needs the State's support.
+    </p>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">👶</div>
+        <h3>Starts at birth</h3>
+        <p>Reading aloud from infancy builds vocabulary, listening skills, and a lifelong love of books — years before formal schooling begins.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🏥</div>
+        <h3>Doctor-delivered</h3>
+        <p>Pediatricians are trusted voices. When they hand a family a book and guidance at check-ups, parents listen — and children thrive.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📖</div>
+        <h3>Increased Reading</h3>
+        <p>Families are 2.5x more likely to read together when they attend Reach Out and Read clinics.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💸</div>
+        <h3>Proven ROI</h3>
+        <p>Early literacy investment reduces special education costs, grade repetition, and juvenile justice involvement. The payoff for taxpayers is enormous.</p>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <p>
+    <strong style="color:white">Reach Out and Read of Greater New York</strong><br/>
+    Fighting for the right to read across the five boroughs and beyond.<br/>
+    <a href="https://reachoutandreadnyc.org/" target="_blank">reachoutandreadnyc.org</a>
+  </p>
+  <p style="margin-top:12px; font-size:12px;">
+    This site is for advocacy purposes only. Messages are sent directly to your elected representatives.<br/>
+    <a href="admin.html" style="opacity:0.6;">Admin</a>
+  </p>
+</footer>
+
+<!-- ══════════════════ SCRIPTS ══════════════════ -->
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+// ─────────────────────────────────────────────
+// CONFIGURATION — replace with your real keys
+// See EMAILJS_SETUP.md for step-by-step EmailJS dashboard setup.
+// ─────────────────────────────────────────────
+const CONFIG = {
+  EMAILJS_PUBLIC_KEY:       '__EMAILJS_PUBLIC_KEY__',   // Injected by build from .env
+  EMAILJS_SERVICE_ID:       '__EMAILJS_SERVICE_ID__',   // Injected by build from .env
+  EMAILJS_TEMPLATE_ID:      '__EMAILJS_TEMPLATE_ID__',  // Injected by build from .env
+  EMAILJS_ADMIN_TEMPLATE_ID:'__EMAILJS_ADMIN_TEMPLATE_ID__', // Optional: admin notification when someone sends
+  EMAILJS_BCC_EMAIL:        '__EMAILJS_BCC_EMAIL__',     // Optional: BCC yourself a copy of every advocacy email
+  OPEN_STATES_API_KEY:      '__OPEN_STATES_API_KEY__',  // Injected by build from .env
+  SUPABASE_URL:             '__SUPABASE_URL__',        // Injected by build from .env
+  SUPABASE_ANON_KEY:        '__SUPABASE_ANON_KEY__',   // Injected by build from .env
+  TEST_EMAIL:               'unclejosh@gmail.com',      // Set to your email, then add ?test=1 to URL to send test there
+};
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let legislators = { assembly: null, senate: null };
+let verifiedAddressDisplay = null;  // normalized address string for confirmation display
+
+// ─────────────────────────────────────────────
+// EmailJS init
+// ─────────────────────────────────────────────
+(function(){
+  if (CONFIG.EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+    emailjs.init(CONFIG.EMAILJS_PUBLIC_KEY);
+  }
+})();
+
+// Show test mode banner when ?test=1 and TEST_EMAIL is set
+(function(){
+  if (window.location.search.includes('test=1')) {
+    if (CONFIG.TEST_EMAIL) {
+      const el = document.getElementById('test-mode-banner');
+      if (el) el.style.display = 'block';
+    }
+    // Config status: show if Open States key is missing/placeholder (helps debug deploy issues)
+    const key = CONFIG.OPEN_STATES_API_KEY || '';
+    const isPlaceholder = !key || key.includes('YOUR_') || key.startsWith('__');
+    const statusEl = document.getElementById('config-status-banner');
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      if (isPlaceholder) {
+        statusEl.style.background = 'rgba(220,38,38,0.2)';
+        statusEl.style.borderColor = 'rgba(220,38,38,0.5)';
+        statusEl.style.color = '#fca5a5';
+        statusEl.innerHTML = '&#9888; Open States API key not configured. Legislator lookup will fail. If this is the live site, set Pages source to <strong>GitHub Actions</strong> in repo Settings → Pages, and ensure <code>OPEN_STATES_API_KEY</code> is in repo Secrets.';
+      } else {
+        statusEl.style.background = 'rgba(34,197,94,0.2)';
+        statusEl.style.borderColor = 'rgba(34,197,94,0.5)';
+        statusEl.style.color = '#86efac';
+        statusEl.innerHTML = '&#9989; Open States API key is configured.';
+      }
+    }
+  }
+})();
+
+// ─────────────────────────────────────────────
+// ADDRESS HELPERS
+// ─────────────────────────────────────────────
+function isNYZip(zip) {
+  const s = zip.replace(/\D/g, '').slice(0, 5);
+  if (s.length !== 5) return false;
+  const prefix = parseInt(s.slice(0, 3), 10);
+  // NY: 005xx (IRS), 100-149 (main NY range)
+  return (s.startsWith('005')) || (prefix >= 100 && prefix <= 149);
+}
+
+// NY zip prefix -> city for more accurate geocoding
+function cityFromZip(zip) {
+  const n = parseInt(zip.slice(0, 3), 10);
+  if (n >= 100 && n <= 102) return 'New York';
+  if (n === 103) return 'Staten Island';
+  if (n === 104) return 'Bronx';
+  if (n === 112) return 'Brooklyn';
+  if (n >= 113 && n <= 114) return 'Flushing';
+  if (n >= 116 && n <= 117) return 'Jamaica';
+  if (n >= 142 && n <= 142) return 'Buffalo';
+  if (n >= 132 && n <= 132) return 'Syracuse';
+  if (n >= 146 && n <= 146) return 'Rochester';
+  if (n >= 122 && n <= 123) return 'Albany';
+  return 'New York';
+}
+
+function getAddress() {
+  const street = document.getElementById('street-address').value.trim();
+  const zip    = document.getElementById('zip-code').value.trim().replace(/\D/g, '').slice(0, 5);
+  if (!street || !zip) return '';
+  const city = cityFromZip(zip);
+  return `${street}, ${city}, NY ${zip}`;
+}
+
+function clearAddressVerification() {
+  verifiedAddressDisplay = null;
+  legislators = { assembly: null, senate: null };
+  document.getElementById('address-confirmed').style.display = 'none';
+  document.getElementById('legislator-section').style.display = 'none';
+  document.getElementById('legislator-area').innerHTML = '';
+  document.getElementById('email-preview').style.display = 'none';
+  document.getElementById('send-btn').disabled = true;
+}
+
+// Re-verify when user changes street or zip (invalidates confirmation)
+['street-address', 'zip-code'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    if (verifiedAddressDisplay || legislators.assembly || legislators.senate) {
+      clearAddressVerification();
+    }
+  });
+});
+
+async function verifyAddress() {
+  const street = document.getElementById('street-address').value.trim();
+  const zip    = document.getElementById('zip-code').value.trim().replace(/\D/g, '').slice(0, 5);
+  if (!street) {
+    showStatus('lookup-status', 'error', 'Please enter your street address.');
+    return;
+  }
+  if (zip.length < 5) {
+    showStatus('lookup-status', 'error', 'Please enter a valid 5-digit NY zip code.');
+    return;
+  }
+  if (!isNYZip(zip)) {
+    showStatus('lookup-status', 'error', 'Please enter a New York State zip code. This advocacy tool only reaches NY legislators.');
+    return;
+  }
+  await lookupLegislators();
+}
+
+// ─────────────────────────────────────────────
+// LEGISLATOR LOOKUP
+// ─────────────────────────────────────────────
+async function lookupLegislators() {
+  const address = getAddress();
+  if (!address) {
+    showStatus('lookup-status', 'error', 'Please enter your street address and zip code.');
+    return;
+  }
+
+  const verifyBtn = document.getElementById('verify-btn');
+  verifyBtn.disabled = true;
+  showStatus('lookup-status', 'loading', '<span class="spinner"></span> Verifying address and looking up your representatives…');
+  document.getElementById('address-confirmed').style.display = 'none';
+  document.getElementById('legislator-section').style.display = 'none';
+  document.getElementById('legislator-area').innerHTML = '';
+  document.getElementById('email-preview').style.display = 'none';
+  document.getElementById('send-btn').disabled = true;
+
+  const useDemo = CONFIG.OPEN_STATES_API_KEY === 'YOUR_OPEN_STATES_API_KEY' || !CONFIG.OPEN_STATES_API_KEY;
+  if (useDemo) {
+    // DEMO MODE: simulate a result
+    await new Promise(r => setTimeout(r, 800));
+    legislators = {
+      assembly: { name: 'Assembly Member (Demo)',  role: 'NY State Assembly', email: 'demo_assembly@nyassembly.gov'  },
+      senate:   { name: 'State Senator (Demo)',    role: 'NY State Senate',   email: 'demo_senator@nysenate.gov'    },
+    };
+    verifiedAddressDisplay = document.getElementById('street-address').value + ', NY ' + document.getElementById('zip-code').value;
+    showStatus('lookup-status', '', '');
+    renderLegislators();
+    verifyBtn.disabled = false;
+    return;
+  }
+
+  const debug = window.location.search.includes('test=1');
+
+  try {
+    // Step 1: Geocode address → lat/lng (Photon, free, no API key)
+    const geoUrl = `https://photon.komoot.io/api/?q=${encodeURIComponent(address)}&limit=1`;
+    if (debug) console.log('[Step 1] Geocoding – requesting coordinates for:', address);
+    const geoRes = await fetch(geoUrl);
+    const geoData = await geoRes.json();
+
+    if (!geoRes.ok || !geoData.features?.length) {
+      throw new Error('Could not verify that address. Please check your street address and 5-digit NY zip code.');
+    }
+
+    const [lng, lat] = geoData.features[0].geometry.coordinates;
+    const props = geoData.features[0].properties || {};
+    if (debug) console.log('[Step 1] Geocoding – OK. lat:', lat, 'lng:', lng, '| state:', props.state);
+
+    // Ensure geocoded result is in NY
+    const state = (props.state || '').toUpperCase();
+    if (state && state !== 'NY' && state !== 'NEW YORK') {
+      throw new Error('That address appears to be outside New York State. This tool only reaches NY legislators.');
+    }
+
+    legislators = { assembly: null, senate: null };
+    const parts = [props.street, props.city || props.locality, props.postcode ? `NY ${props.postcode}` : 'NY'].filter(Boolean);
+    verifiedAddressDisplay = parts.length ? parts.join(', ') : address;
+
+    // Step 2: Open States people.geo – lat/lng → legislators
+    // Use apikey query param (more reliable from browser than header)
+    const apiKey = CONFIG.OPEN_STATES_API_KEY || '';
+    if (debug) console.log('[Step 2] Open States – API key present:', !!apiKey, '| placeholder?', apiKey.includes('YOUR_'));
+    const geoPeopleUrl = `https://v3.openstates.org/people.geo?lat=${lat}&lng=${lng}&include=offices&apikey=${encodeURIComponent(apiKey)}`;
+    if (debug) console.log('[Step 2] Open States – fetching legislators for coordinates...');
+    const peopleRes = await fetch(geoPeopleUrl);
+    const peopleData = await peopleRes.json();
+
+    if (!peopleRes.ok) {
+      const errDetail = peopleData.detail || peopleData.message || (typeof peopleData === 'string' ? peopleData : null);
+      throw new Error(errDetail || `Open States API error (${peopleRes.status})`);
+    }
+
+    const results = peopleData.results || [];
+    if (debug) console.log('[Step 2] Open States – returned', results.length, 'people');
+
+    for (const p of results) {
+      const role = p.current_role;
+      if (!role) continue;
+      const org = (role.org_classification || '').toLowerCase();
+      const jurId = (p.jurisdiction?.id || '').toLowerCase();
+      if (!jurId.includes('ny')) continue;
+
+      if (org === 'lower' && !legislators.assembly) {
+        const email = p.email || (p.offices?.[0]?.email) || deriveEmail(p.name, true);
+        const source = p.email ? 'API' : (p.offices?.[0]?.email ? 'office' : 'derived');
+        if (debug) console.log('[Step 2] Assembly', p.name, '→', email, '(' + source + ')');
+        legislators.assembly = { name: p.name, role: 'NY State Assembly', email };
+      }
+      if (org === 'upper' && !legislators.senate) {
+        const email = p.email || (p.offices?.[0]?.email) || deriveEmail(p.name, false);
+        const source = p.email ? 'API' : (p.offices?.[0]?.email ? 'office' : 'derived');
+        if (debug) console.log('[Step 2] Senate', p.name, '→', email, '(' + source + ')');
+        legislators.senate = { name: p.name, role: 'NY State Senate', email };
+      }
+    }
+
+    if (!legislators.assembly && !legislators.senate) throw new Error('Could not find state legislators for that address. Please verify your street address and that you entered a valid NY zip code.');
+
+    showStatus('lookup-status', '', '');
+    renderLegislators();
+
+  } catch(err) {
+    verifiedAddressDisplay = null;
+    const msg = err.message || String(err);
+    const isApiKeyError = /API key|invalid.*key|permission|forbidden|unauthorized|rate limit|401|403/i.test(msg);
+    if (isApiKeyError) console.error('Lookup API error:', msg);
+    const userMessage = isApiKeyError
+      ? 'Address lookup is temporarily unavailable. Please try again later or contact the site administrator.'
+      : '❌ ' + msg + (msg.includes('zip') || msg.includes('address') ? '' : ' Please check your street address and 5-digit NY zip code.');
+    showStatus('lookup-status', 'error', userMessage);
+  }
+
+  verifyBtn.disabled = false;
+}
+
+function deriveEmail(name, isAssembly) {
+  // NY legislators follow [lastname][firstinitial]@nyassembly.gov / @nysenate.gov
+  const parts = name.replace(/^(Assemblymember|Senator|Assembly Member)\s*/i, '').trim().split(/\s+/);
+  const last  = parts[parts.length - 1].toLowerCase().replace(/[^a-z]/g,'');
+  const first = parts[0][0].toLowerCase();
+  const domain = isAssembly ? 'nyassembly.gov' : 'nysenate.gov';
+  return `${last}${first}@${domain}`;
+}
+
+function renderLegislators() {
+  // Show address confirmation
+  if (verifiedAddressDisplay) {
+    document.getElementById('verified-address-text').textContent = 'Address verified: ' + verifiedAddressDisplay;
+    document.getElementById('address-confirmed').style.display = 'flex';
+  }
+
+  const area = document.getElementById('legislator-area');
+  area.innerHTML = '';
+
+  const found = [legislators.assembly, legislators.senate].filter(Boolean);
+  if (found.length > 0) {
+    document.getElementById('legislator-section').style.display = 'flex';
+  }
+  found.forEach(leg => {
+    const card = document.createElement('div');
+    card.className = 'legislator-found';
+    card.innerHTML = `
+      <div class="leg-icon">🏛</div>
+      <div class="leg-info">
+        <h4>${leg.name}</h4>
+        <p>${leg.role} · ${leg.email}</p>
+      </div>`;
+    area.appendChild(card);
+  });
+
+  buildEmailPreview();
+  document.getElementById('send-btn').disabled = false;
+}
+
+// ─────────────────────────────────────────────
+// EMAIL TEMPLATE
+// ─────────────────────────────────────────────
+function buildEmailBody(senderName, legsOrNames) {
+  const legs = Array.isArray(legsOrNames) && legsOrNames.length > 0 && typeof legsOrNames[0] === 'object'
+    ? legsOrNames
+    : [legislators.assembly, legislators.senate].filter(Boolean);
+  const last = n => (n || '').trim().split(/\s+/).pop() || '';
+  const salutation = legs.map(l => {
+    const lastName = last(l.name);
+    if ((l.role || '').toLowerCase().includes('assembly')) return `Assembly Member ${lastName}`;
+    if ((l.role || '').toLowerCase().includes('senate')) return `Senator ${lastName}`;
+    return lastName || 'Legislator';
+  });
+  const greeting = salutation.length === 0
+    ? 'Dear Legislator,'
+    : `Dear ${salutation.join(' and ')},`;
+
+  return `${greeting}
+
+My name is ${senderName}, and I am a constituent writing to urge you to support $3 million in dedicated state funding for Reach Out and Read in the New York State Budget.
+
+Reach Out and Read works with pediatricians and health centers to make reading a natural part of caring for young children. During regular checkups, doctors give families a new, high-quality book and share simple, practical guidance about reading aloud at home. This trusted, relationship-based approach reaches families early—often from birth—and helps support language development, strengthen parent-child connections, and set children up for success once they enter school.
+
+Reach Out and Read currently serves over 300,000 children across 340 clinics in New York State, but 95 clinics remain on a waitlist due to funding constraints. This $3 million investment would allow the program to expand to these sites statewide, reaching children in underserved communities at a cost of just $20 per child per year.
+
+Investment in early literacy pays for itself many times over: research shows that every dollar spent on early childhood programs returns seven or more through reduced special education costs, lower grade repetition rates, and better lifetime outcomes. New York State cannot afford not to act.
+
+Thank you for your service and your commitment to New York families.
+
+Sincerely,
+${senderName}`;
+}
+
+function buildEmailPreview() {
+  const firstName = document.getElementById('first-name').value || 'Your';
+  const lastName  = document.getElementById('last-name').value  || 'Name';
+  const senderName = `${firstName} ${lastName}`.trim();
+
+  const legs = [legislators.assembly, legislators.senate].filter(Boolean);
+  const legNames = legs.map(l => l.name);
+  document.getElementById('recipient-preview').textContent = `To: ${legNames.join(' and ')}`;
+
+  // In test mode, show actual email addresses so you can verify against official sites
+  const verifyEl = document.getElementById('recipient-emails-verify');
+  if (window.location.search.includes('test=1') && legs.length > 0) {
+    verifyEl.style.display = 'block';
+    const emails = legs.map(l => `${l.name}: ${l.email}`).join(' | ');
+    verifyEl.innerHTML = `Addresses: ${emails} — <a href="https://assembly.state.ny.us/mem/" target="_blank" rel="noopener">Verify Assembly</a> · <a href="https://www.nysenate.gov/senators-committees" target="_blank" rel="noopener">Verify Senate</a>`;
+  } else {
+    verifyEl.style.display = 'none';
+  }
+
+  const body = buildEmailBody(senderName, legs);
+  document.getElementById('email-body-preview').textContent = body;
+  document.getElementById('email-preview').style.display = 'block';
+}
+
+// Update preview as user types name
+['first-name','last-name'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    if (legislators.assembly || legislators.senate) buildEmailPreview();
+  });
+});
+
+// ─────────────────────────────────────────────
+// FORM SUBMIT
+// ─────────────────────────────────────────────
+document.getElementById('advocacy-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const firstName = document.getElementById('first-name').value.trim();
+  const lastName  = document.getElementById('last-name').value.trim();
+  const email     = document.getElementById('email').value.trim();
+
+  if (!firstName || !lastName || !email) {
+    showStatus('send-status', 'error', '❌ Please fill in your name and email address.');
+    return;
+  }
+
+  if (!legislators.assembly && !legislators.senate) {
+    showStatus('send-status', 'error', '❌ Please verify your address first using the "Verify my address" button.');
+    return;
+  }
+
+  const btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Sending…';
+  showStatus('send-status', '', '');
+
+  const senderName  = `${firstName} ${lastName}`;
+  const legs        = [legislators.assembly, legislators.senate].filter(Boolean);
+  const emailBody   = buildEmailBody(senderName, legs);
+  let recipients    = [legislators.assembly?.email, legislators.senate?.email].filter(Boolean).join(', ');
+  let legNamesStr   = legs.map(l => l.name).join(' and ');
+
+  // Test mode: add ?test=1 to URL and set CONFIG.TEST_EMAIL to send to yourself instead of legislators
+  if (window.location.search.includes('test=1') && CONFIG.TEST_EMAIL) {
+    recipients = CONFIG.TEST_EMAIL;
+    legNamesStr = 'Test Recipient';
+    console.log('[Step 3] Email – test mode: sending to', CONFIG.TEST_EMAIL, 'instead of legislators');
+  } else {
+    console.log('[Step 3] Email – sending to legislators:', recipients);
+  }
+
+  // Check if EmailJS is configured
+  if (CONFIG.EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID') {
+    // DEMO: simulate send
+    await new Promise(r => setTimeout(r, 1200));
+    logAction(senderName, email, legNamesStr, recipients);
+    showSuccessScreen(senderName);
+    return;
+  }
+
+  try {
+    // Simulate send failure for testing: add ?simulate_send_error=1 to the URL
+    if (window.location.search.includes('simulate_send_error=1')) {
+      throw new Error('Failed to fetch');
+    }
+    const templateParams = {
+      to_email:          recipients,
+      to_name:           legNamesStr,
+      from_name:         senderName,
+      from_email:        email,
+      message:           emailBody,
+      legislator_names:  legNamesStr,
+      reply_to:          email,
+    };
+    if (CONFIG.EMAILJS_BCC_EMAIL) templateParams.bcc_email = CONFIG.EMAILJS_BCC_EMAIL;
+    await emailjs.send(CONFIG.EMAILJS_SERVICE_ID, CONFIG.EMAILJS_TEMPLATE_ID, templateParams);
+
+    if (window.location.search.includes('test=1')) console.log('[Step 3] Email – sent successfully to', recipients);
+    logAction(senderName, email, legNamesStr, recipients);
+    // Optional: email admin when someone sends (uses same EmailJS service, different template)
+    const adminTemplateId = (CONFIG.EMAILJS_ADMIN_TEMPLATE_ID || '').trim();
+    if (adminTemplateId && !adminTemplateId.startsWith('__')) {
+      // Delay ~1.2s to avoid EmailJS rate limit (free tier: ~1 req/sec)
+      setTimeout(() => {
+        emailjs.send(CONFIG.EMAILJS_SERVICE_ID, adminTemplateId, {
+          sender_name:       senderName,
+          sender_email:      email,
+          legislators:       legNamesStr,
+          recipient_emails:  recipients,
+          date:              new Date().toLocaleString(),
+        }).then(
+          () => { if (window.location.search.includes('test=1')) console.log('[Step 3] Admin notification – sent'); },
+          (err) => { console.error('[Step 3] Admin notification – failed:', err?.text || err?.message || err); }
+        );
+      }, 1200);
+    } else if (window.location.search.includes('test=1') && !adminTemplateId) {
+      console.log('[Step 3] Admin notification – skipped (EMAILJS_ADMIN_TEMPLATE_ID not set)');
+    }
+    showSuccessScreen(senderName);
+
+  } catch(err) {
+    if (window.location.search.includes('test=1')) console.error('[Step 3] Email – failed:', err.text || err.message);
+    btn.disabled = false;
+    btn.innerHTML = '2. Send email to Albany';
+    const subject = 'Constituent message: Support childhood literacy funding';
+    const toAddresses = recipients.split(',').map(s => s.trim()).join(', ');
+    const mailtoHref = 'mailto:' + toAddresses +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(emailBody);
+    const errorHtml = '❌ The automated email failed. You can still send your message: ' +
+      '<a href="' + mailtoHref + '" target="_blank" rel="noopener" style="font-weight:600;text-decoration:underline;">Click here to open your email and send it manually</a>.<br><br>' +
+      'Please report this to <a href="mailto:josh@goinggreen.earth">josh@goinggreen.earth</a> so we can fix it.';
+    showStatus('send-status', 'error', errorHtml);
+  }
+});
+
+// ─────────────────────────────────────────────
+// TRACKING (localStorage + Supabase)
+// ─────────────────────────────────────────────
+function logAction(name, email, legislators, recipientEmails) {
+  const row = { name, email, legislators, recipient_emails: recipientEmails || '', ts: new Date().toISOString() };
+  try {
+    const log = JSON.parse(localStorage.getItem('ror_sends') || '[]');
+    log.push(row);
+    localStorage.setItem('ror_sends', JSON.stringify(log));
+  } catch(e) {}
+  // Push to Supabase if configured
+  if (CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) {
+    try {
+      const { createClient } = supabase;
+      const sb = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+      sb.from('sends').insert(row).then(() => {}, () => {});
+    } catch(e) {}
+  }
+}
+
+// ─────────────────────────────────────────────
+// UI HELPERS
+// ─────────────────────────────────────────────
+function showStatus(id, type, html) {
+  const el = document.getElementById(id);
+  el.style.display = html ? 'block' : 'none';
+  el.className = 'status-msg ' + (type || '');
+  el.innerHTML = html;
+}
+
+function showSuccessScreen(name) {
+  document.getElementById('form-wrapper').style.display = 'none';
+  document.getElementById('success-screen').style.display = 'block';
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.querySelector('.share-btn-copy');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '🔗 Copy link to share with others', 2000);
+  });
+}
+</script>
+
+</body>
+</html>

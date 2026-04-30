@@ -1,0 +1,13 @@
+{
+  "name": "going-green-advocacy-2",
+  "version": "1.0.0",
+  "description": "Going Green Advocacy 2 — legislator outreach (NY)",
+  "scripts": {
+    "build": "node build.js",
+    "preview": "npm run build && npx serve dist -p 8080"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "supabase": "^2.76.0"
+  }
+}
