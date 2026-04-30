@@ -2,13 +2,15 @@
 #
 # Repo: jgnov/going-green-advocacy-2
 #
+# Council lookup uses bundled data/nycc.geojson + data/council-members.json (no Civic API).
+#
 # Secrets (Settings → Secrets and variables → Actions):
-#   GOOGLE_CIVIC_API_KEY, EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID
+#   EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID
 #   EMAILJS_ADMIN_TEMPLATE_ID (optional), EMAILJS_BCC_EMAIL (optional),
 #   SUPABASE_URL, SUPABASE_ANON_KEY (optional, for admin panel)
 #
-# Rotate: remove obsolete OPEN_STATES_API_KEY if it still exists in the repo.
-# Pages: Source → GitHub Actions; custom domain → city.goinggreen.earth + DNS CNAME city → jgnov.github.io
+# Remove obsolete secrets from the repo interface: OPEN_STATES_API_KEY, GOOGLE_CIVIC_API_KEY.
+# Pages: Source → GitHub Actions; custom domain → city.goinggreen.earth
 
 name: Deploy
 
@@ -40,7 +42,6 @@ jobs:
 
       - name: Create .env from secrets
         run: |
-          echo "GOOGLE_CIVIC_API_KEY=${{ secrets.GOOGLE_CIVIC_API_KEY }}" >> .env
           echo "EMAILJS_PUBLIC_KEY=${{ secrets.EMAILJS_PUBLIC_KEY }}" >> .env
           echo "EMAILJS_SERVICE_ID=${{ secrets.EMAILJS_SERVICE_ID }}" >> .env
           echo "EMAILJS_TEMPLATE_ID=${{ secrets.EMAILJS_TEMPLATE_ID }}" >> .env

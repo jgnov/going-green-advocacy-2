@@ -499,6 +499,13 @@
       color: rgba(255,255,255,0.55);
     }
 
+    .demo-council-banner {
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #FCD34D !important;
+    }
+
     /* ── STATUS MESSAGES ── */
     .status-msg {
       display: none;
@@ -829,6 +836,7 @@
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 
 <script>
 // ─────────────────────────────────────────────
@@ -841,7 +849,6 @@ const CONFIG = {
   EMAILJS_TEMPLATE_ID:      '__EMAILJS_TEMPLATE_ID__',  // Injected by build from .env
   EMAILJS_ADMIN_TEMPLATE_ID:'__EMAILJS_ADMIN_TEMPLATE_ID__', // Optional: admin notification when someone sends
   EMAILJS_BCC_EMAIL:        '__EMAILJS_BCC_EMAIL__',     // Optional: BCC yourself a copy of every advocacy email
-  GOOGLE_CIVIC_API_KEY:     '__GOOGLE_CIVIC_API_KEY__',  // Injected by build from .env
   SUPABASE_URL:             '__SUPABASE_URL__',        // Injected by build from .env
   SUPABASE_ANON_KEY:        '__SUPABASE_ANON_KEY__',   // Injected by build from .env
   TEST_EMAIL:               'unclejosh@gmail.com',      // Set to your email, then add ?test=1 to URL to send test there
@@ -853,6 +860,8 @@ const CONFIG = {
 /** @type {{ name: string, role: string, email: string } | null } */
 let councilMember = null;
 let verifiedAddressDisplay = null;  // normalized address string for confirmation display
+/** True when bundled data failed to load / no polygon hit — shows District 99 demo fallback */
+let lookupUsedDemoFallback = false;
 
 // ─────────────────────────────────────────────
 // EmailJS init
@@ -863,31 +872,27 @@ let verifiedAddressDisplay = null;  // normalized address string for confirmatio
   }
 })();
 
-// Show test mode banner when ?test=1 and TEST_EMAIL is set
+// Show test mode banner when ?test=1 and TEST_EMAIL is set; static lookup diagnostics
 (function(){
-  if (window.location.search.includes('test=1')) {
-    if (CONFIG.TEST_EMAIL) {
-      const el = document.getElementById('test-mode-banner');
-      if (el) el.style.display = 'block';
-    }
-    // Config status: Google Civic API key (helps debug deploy issues)
-    const key = CONFIG.GOOGLE_CIVIC_API_KEY || '';
-    const isPlaceholder = !key || key.includes('YOUR_') || key.startsWith('__');
-    const statusEl = document.getElementById('config-status-banner');
-    if (statusEl) {
-      statusEl.style.display = 'block';
-      if (isPlaceholder) {
-        statusEl.style.background = 'rgba(220,38,38,0.2)';
-        statusEl.style.borderColor = 'rgba(220,38,38,0.5)';
-        statusEl.style.color = '#fca5a5';
-        statusEl.innerHTML = '&#9888; Google Civic API key not configured. Council lookup will use demo mode. On the live site, set Pages to <strong>GitHub Actions</strong> and add <code>GOOGLE_CIVIC_API_KEY</code> in repo Secrets.';
-      } else {
-        statusEl.style.background = 'rgba(34,197,94,0.2)';
-        statusEl.style.borderColor = 'rgba(34,197,94,0.5)';
-        statusEl.style.color = '#86efac';
-        statusEl.innerHTML = '&#9989; Google Civic API key is configured.';
-      }
-    }
+  if (!window.location.search.includes('test=1')) return;
+  if (CONFIG.TEST_EMAIL) {
+    const el = document.getElementById('test-mode-banner');
+    if (el) el.style.display = 'block';
+  }
+  const statusEl = document.getElementById('config-status-banner');
+  if (!statusEl) return;
+  statusEl.style.display = 'block';
+  const turfMissing = typeof window.turf === 'undefined';
+  if (turfMissing) {
+    statusEl.style.background = 'rgba(220,38,38,0.2)';
+    statusEl.style.borderColor = 'rgba(220,38,38,0.5)';
+    statusEl.style.color = '#fca5a5';
+    statusEl.innerHTML = '&#9888; Turf.js did not load; district polygon checks will fall back to <strong>District 99 demo</strong>. Check the CDN or ad blockers.';
+  } else {
+    statusEl.style.background = 'rgba(34,197,94,0.2)';
+    statusEl.style.borderColor = 'rgba(34,197,94,0.5)';
+    statusEl.style.color = '#86efac';
+    statusEl.innerHTML = '&#9989; Static NYC lookup enabled (Photon + <code>data/nycc.geojson</code> + roster). No Civic API.';
   }
 })();
 
@@ -904,7 +909,7 @@ function isNYCZip(zip) {
   return false;
 }
 
-/** Borough/city hint for Photon + Civic formatted address */
+/** Borough/city hint for Photon-geocoded address string */
 function cityFromZip(zip) {
   const n = parseInt(zip.slice(0, 3), 10);
   if (n >= 100 && n <= 102) return 'New York';
@@ -938,6 +943,7 @@ function geocodeLooksLikeNYC(props) {
 function clearAddressVerification() {
   verifiedAddressDisplay = null;
   councilMember = null;
+  lookupUsedDemoFallback = false;
   document.getElementById('address-confirmed').style.display = 'none';
   document.getElementById('legislator-section').style.display = 'none';
   document.getElementById('legislator-area').innerHTML = '';
@@ -971,44 +977,49 @@ async function verifyAddress() {
 }
 
 // ─────────────────────────────────────────────
-// NYC COUNCIL LOOKUP (Photon + Google Civic Information API)
+// NYC COUNCIL LOOKUP (Photon + DCP GeoJSON + static roster — no Civic API)
 // ─────────────────────────────────────────────
 
-/** Fallback local part: firstname.lastname@council.nyc.gov (particles / hyphens collapsed per brief) */
-function deriveCouncilEmail(name) {
-  let raw = name.replace(/^Council(member|\s+Member)?\s*/i, '').replace(/\([^)]*\)/g, '').trim();
-  const parts = raw.split(/\s+/).filter(Boolean);
-  if (parts.length < 2) return '';
-  const last = parts.pop().toLowerCase().replace(/-/g, '').replace(/[^a-z]/g, '');
-  const first = parts.join('').toLowerCase().replace(/-/g, '').replace(/[^a-z]/g, '');
-  if (!first || !last) return '';
-  return `${first}.${last}@council.nyc.gov`;
+function districtNumberFromFeature(f) {
+  const p = f.properties || {};
+  const raw = p.CounDist != null ? p.CounDist : (p.coundist != null ? p.coundist : p.COUNDIST);
+  if (raw == null || raw === '') return null;
+  const n = parseInt(String(raw).trim(), 10);
+  return Number.isFinite(n) && n >= 1 && n <= 51 ? String(n) : null;
 }
 
-/**
- * Pick NYC Council member: locality + legislatorLowerBody (Google Civic convention for city council seats).
- */
-function pickNYCouncilOfficial(data) {
-  const offices = data.offices || [];
-  const officials = data.officials || [];
-  function firstOfficial(office) {
-    const idxList = office.officialIndices;
-    if (!idxList?.length) return null;
-    for (const ii of idxList) {
-      const o = officials[ii];
-      if (o?.name) return { official: o, office };
+function polygonHitForPoint(features, lng, lat) {
+  if (typeof turf === 'undefined') return null;
+  const pt = turf.point([lng, lat]);
+  const list = Array.isArray(features) ? features : [];
+  const debug = window.location.search.includes('test=1');
+  for (const f of list) {
+    if (!f || !f.geometry) continue;
+    try {
+      if (turf.booleanPointInPolygon(pt, f)) return f;
+    } catch (e) {
+      if (debug) console.warn('booleanPointInPolygon skipped feature', e);
     }
-    return null;
-  }
-  for (const office of offices) {
-    const levels = office.levels || [];
-    const roles = office.roles || [];
-    if (!levels.includes('locality')) continue;
-    if (!roles.includes('legislatorLowerBody')) continue;
-    const hit = firstOfficial(office);
-    if (hit) return hit;
   }
   return null;
+}
+
+async function activateDemoFallback(kind) {
+  await new Promise(r => setTimeout(r, 650));
+  lookupUsedDemoFallback = true;
+  const streetLine = `${document.getElementById('street-address').value.trim()}, NYC ${document.getElementById('zip-code').value.trim()}`;
+  verifiedAddressDisplay = streetLine;
+  councilMember = {
+    name: 'Council Member (Demo — District 99)',
+    role: 'DEMO FALLBACK · not real data',
+    email: 'test@council.nyc.gov',
+  };
+  const hint = kind === 'load'
+    ? 'District data failed to load; showing Demo District 99.'
+    : kind === 'turf'
+      ? 'Mapping library unavailable; showing Demo District 99.'
+      : 'Address fell outside bundled council polygons; showing Demo District 99.';
+  showStatus('lookup-status', 'error', `&#9888; ${hint} Check your connection or try again later.`);
 }
 
 async function lookupLegislators() {
@@ -1027,22 +1038,8 @@ async function lookupLegislators() {
   document.getElementById('email-preview').style.display = 'none';
   document.getElementById('send-btn').disabled = true;
 
-  const civicKey = (CONFIG.GOOGLE_CIVIC_API_KEY || '').trim();
-  const useDemo =
-    civicKey === 'YOUR_GOOGLE_CIVIC_API_KEY' || !civicKey || civicKey.startsWith('__');
-  if (useDemo) {
-    await new Promise(r => setTimeout(r, 800));
-    councilMember = {
-      name: 'Council Member (Demo)',
-      role: 'NYC Council Member',
-      email: 'demo.councilmember@council.nyc.gov',
-    };
-    verifiedAddressDisplay = `${document.getElementById('street-address').value.trim()}, NYC ${document.getElementById('zip-code').value.trim()}`;
-    showStatus('lookup-status', '', '');
-    renderLegislators();
-    verifyBtn.disabled = false;
-    return;
-  }
+  lookupUsedDemoFallback = false;
+  councilMember = null;
 
   const debug = window.location.search.includes('test=1');
 
@@ -1056,6 +1053,9 @@ async function lookupLegislators() {
       throw new Error('Could not verify that address. Please check your street and 5-digit NYC zip code.');
     }
 
+    const [lng, lat] = geoData.features[0].geometry.coordinates || [];
+    if (lng == null || lat == null) throw new Error('Invalid geocoder response.');
+
     const props = geoData.features[0].properties || {};
     if (debug) console.log('[Step 1] Photon – OK', props);
 
@@ -1063,46 +1063,71 @@ async function lookupLegislators() {
       throw new Error('That address appears to be outside New York City. This tool only reaches NYC Council Members.');
     }
 
-    councilMember = null;
     const parts = [props.street, props.city || props.locality, props.postcode ? `NY ${String(props.postcode).slice(0, 5)}` : null].filter(Boolean);
     verifiedAddressDisplay = parts.length ? parts.join(', ') : address;
 
-    const civicAddress = verifiedAddressDisplay || address;
-    const key = encodeURIComponent(civicKey);
-    const civicUrl =
-      `https://www.googleapis.com/civicinfo/v2/representativeInfoByAddress?` +
-      `address=${encodeURIComponent(civicAddress)}&levels=locality&roles=legislatorLowerBody&key=${key}`;
-    if (debug) console.log('[Step 2] Google Civic – fetching representatives…');
-    const civicRes = await fetch(civicUrl);
-    const civicData = await civicRes.json();
-
-    if (!civicRes.ok) {
-      const msg = civicData?.error?.message || civicData?.message || JSON.stringify(civicData);
-      throw new Error(msg || `Google Civic API error (${civicRes.status})`);
+    let boundaries;
+    let roster;
+    try {
+      const [boundaryRes, rosterRes] = await Promise.all([
+        fetch('data/nycc.geojson'),
+        fetch('data/council-members.json'),
+      ]);
+      if (!boundaryRes.ok || !rosterRes.ok) {
+        throw new Error('static_http');
+      }
+      boundaries = await boundaryRes.json();
+      roster = await rosterRes.json();
+    } catch (loadErr) {
+      if (debug) console.error('[Step 2] Bundled data load failed:', loadErr);
+      await activateDemoFallback('load');
+      renderLegislators();
+      verifyBtn.disabled = false;
+      return;
     }
 
-    const picked = pickNYCouncilOfficial(civicData);
-    if (!picked) throw new Error('Could not find an NYC Council Member for that address. Please verify your street and NYC zip code.');
+    if (typeof turf === 'undefined') {
+      if (debug) console.error('Turf not available');
+      await activateDemoFallback('turf');
+      renderLegislators();
+      verifyBtn.disabled = false;
+      return;
+    }
 
-    const official = picked.official;
-    const councilName = (official.name || 'NYC Council Member').trim();
-    const emailRaw = official.emails && official.emails[0] ? String(official.emails[0]).trim() : '';
-    const email = emailRaw || deriveCouncilEmail(councilName);
-    if (!email) throw new Error('Council member resolved but email could not be determined. Try again or email via nyc.gov/council.');
+    const feats = boundaries.features || [];
+    const match = polygonHitForPoint(feats, lng, lat);
+    if (!match) {
+      if (debug) console.warn('[Step 3] No council polygon contains point');
+      await activateDemoFallback('polygon');
+      renderLegislators();
+      verifyBtn.disabled = false;
+      return;
+    }
 
-    councilMember = { name: councilName, role: 'NYC Council Member', email };
+    const districtNum = districtNumberFromFeature(match);
+    if (!districtNum) throw new Error('Could not read council district id from boundaries file.');
+
+    const member = roster[districtNum];
+    if (!member || !member.name || !member.email) {
+      throw new Error(`No roster entry for district ${districtNum}. Update data/council-members.json.`);
+    }
+
+    councilMember = {
+      name: member.name,
+      email: String(member.email).trim(),
+      role: `NYC Council Member · District ${districtNum}`,
+    };
+    lookupUsedDemoFallback = false;
 
     showStatus('lookup-status', '', '');
     renderLegislators();
   } catch (err) {
     verifiedAddressDisplay = null;
     councilMember = null;
+    lookupUsedDemoFallback = false;
     const msg = err.message || String(err);
-    const isApiKeyError = /API key|invalid.*key|API_KEY|permission|forbidden|unauthorized|403|dailyLimit|quota/i.test(msg);
-    if (isApiKeyError) console.error('Lookup API error:', msg);
-    const userMessage = isApiKeyError
-      ? 'Address lookup is temporarily unavailable. Please try again later or contact the site administrator.'
-      : '❌ ' + msg + (/zip|address|NYC/i.test(msg) ? '' : ' Please check your street address and NYC zip code.');
+    if (debug) console.error('Lookup error:', err);
+    const userMessage = '❌ ' + msg + (/zip|address|NYC|district|roster/i.test(msg) ? '' : ' Please check your street address and NYC zip code.');
     showStatus('lookup-status', 'error', userMessage);
   }
 
@@ -1122,11 +1147,15 @@ function renderLegislators() {
     document.getElementById('legislator-section').style.display = 'flex';
     const card = document.createElement('div');
     card.className = 'legislator-found';
+    const demoBanner = lookupUsedDemoFallback
+      ? '<p class="demo-council-banner">Demo fallback: District 99 / test@council — not production data.</p>'
+      : '';
     card.innerHTML = `
       <div class="leg-icon">🏛</div>
       <div class="leg-info">
         <h4>${councilMember.name}</h4>
         <p>${councilMember.role} · ${councilMember.email}</p>
+        ${demoBanner}
       </div>`;
     area.appendChild(card);
   }
