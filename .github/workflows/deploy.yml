@@ -1,14 +1,14 @@
-# Going Green Advocacy 2 — Deploy to GitHub Pages (rorgny2.goinggreen.earth)
+# Going Green Advocacy 2 — City Council staging (city.goinggreen.earth)
 #
-# One-time GitHub setup (new repo):
-# 1. Create an empty repository (e.g. going-green-advocacy-2) under your account/org.
-# 2. From this project folder: git remote add origin <repo-url> && git push -u origin main
-#    Or use scripts/connect-new-github-remote.sh
-# 3. Repo Settings → Secrets and variables → Actions — add:
-#    OPEN_STATES_API_KEY, EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID
-#    EMAILJS_ADMIN_TEMPLATE_ID (optional), EMAILJS_BCC_EMAIL (optional),
-#    SUPABASE_URL, SUPABASE_ANON_KEY (optional, for admin panel)
-# 4. Settings → Pages → Build and deployment → Source: GitHub Actions
+# Repo: jgnov/going-green-advocacy-2
+#
+# Secrets (Settings → Secrets and variables → Actions):
+#   GOOGLE_CIVIC_API_KEY, EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID
+#   EMAILJS_ADMIN_TEMPLATE_ID (optional), EMAILJS_BCC_EMAIL (optional),
+#   SUPABASE_URL, SUPABASE_ANON_KEY (optional, for admin panel)
+#
+# Rotate: remove obsolete OPEN_STATES_API_KEY if it still exists in the repo.
+# Pages: Source → GitHub Actions; custom domain → city.goinggreen.earth + DNS CNAME city → jgnov.github.io
 
 name: Deploy
 
@@ -40,7 +40,7 @@ jobs:
 
       - name: Create .env from secrets
         run: |
-          echo "OPEN_STATES_API_KEY=${{ secrets.OPEN_STATES_API_KEY }}" >> .env
+          echo "GOOGLE_CIVIC_API_KEY=${{ secrets.GOOGLE_CIVIC_API_KEY }}" >> .env
           echo "EMAILJS_PUBLIC_KEY=${{ secrets.EMAILJS_PUBLIC_KEY }}" >> .env
           echo "EMAILJS_SERVICE_ID=${{ secrets.EMAILJS_SERVICE_ID }}" >> .env
           echo "EMAILJS_TEMPLATE_ID=${{ secrets.EMAILJS_TEMPLATE_ID }}" >> .env

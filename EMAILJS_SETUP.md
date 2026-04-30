@@ -1,19 +1,23 @@
-# EmailJS Dashboard Setup for Going Green Advocacy
+# EmailJS Dashboard Setup — Going Green Advocacy 2 (NYC Council)
 
-This guide walks you through configuring EmailJS so the advocacy site can send emails to legislators through the form.
+This guide configures EmailJS for the city council advocacy site. Messages go to **one** NYC Council Member email address resolved via Google Civic Information API (`to_email` is a single address, not comma-separated).
+
+**Staging domain:** add `city.goinggreen.earth` to EmailJS allowed domains (Account → Security). Consider creating a **dedicated EmailJS template** for this site with a NYC budget–oriented subject line so it stays distinct from the state campaign.
 
 ## Prerequisites
 
-The site already has the EmailJS SDK integrated and sends these template parameters:
+The site integrates the EmailJS SDK and sends these template parameters:
 
-- `to_email` – comma-separated legislator emails (Assembly + Senator)
-- `to_name` – legislator names
+- `to_email` – NYC Council Member email (single recipient)
+- `to_name` – Council member display name
 - `from_name` – sender full name
 - `from_email` – sender email
 - `message` – full advocacy email body
-- `legislator_names` – same as `to_name`
-- `reply_to` – sender email (so legislators can reply directly to the constituent)
-- `bcc_email` – (optional) your email to BCC a copy of every advocacy email
+- `legislator_names` – same as `to_name` (field name unchanged for backward compatibility with templates)
+- `reply_to` – sender email so the Council office can reply
+- `bcc_email` – optional BCC of every outbound message
+
+Lookup uses **Photon** (geocoding) + **Google Civic Information API**; see `.env.example` (`GOOGLE_CIVIC_API_KEY`).
 
 ---
 
@@ -21,145 +25,79 @@ The site already has the EmailJS SDK integrated and sends these template paramet
 
 1. Sign up at [dashboard.emailjs.com](https://dashboard.emailjs.com)
 2. Go to **Account** > **API Keys**
-3. Copy your **Public Key** – this becomes `EMAILJS_PUBLIC_KEY` in `index.html`
+3. Copy your **Public Key** → `EMAILJS_PUBLIC_KEY` in `.env` / GitHub Secrets
 
 ---
 
 ## Step 2: Add an Email Service
 
 1. Go to [Email Services](https://dashboard.emailjs.com/admin)
-2. Click **Add New Service**
-3. Choose either:
-   - **Personal** (e.g. Gmail, Outlook): fine for testing / low volume
-   - **Transactional** (e.g. SendGrid, Mailgun): recommended for production
-4. Connect the account (e.g. sign in with Gmail)
-5. Set a **Service ID** (e.g. `service_advocacy` or `contact_service`)
-6. Click **Create** / **Add Service**
-7. Copy the **Service ID** – this becomes `EMAILJS_SERVICE_ID` in `index.html`
+2. **Add New Service** (personal or transactional provider)
+3. Note **Service ID** → `EMAILJS_SERVICE_ID`
 
 ---
 
 ## Step 3: Create an Email Template
 
-1. Go to [Email Templates](https://dashboard.emailjs.com/admin/templates)
-2. Click **Create New Template**
-3. Configure the template fields:
-
 | Field | Value |
 |-------|-------|
-| **Subject** | `Constituent message: Support childhood literacy funding` (or use `{{from_name}}`) |
+| **Subject** | e.g. `Constituent message: NYC budget & childhood literacy` (or `{{from_name}}`) |
 | **To Email** | `{{to_email}}` |
 | **From Name** | `{{from_name}}` |
-| **From Email** | Use the "default email" option or `{{from_email}}` |
+| **From Email** | Default service email or `{{from_email}}` |
 | **Reply-To** | `{{reply_to}}` |
-| **Bcc** | `{{bcc_email}}` (optional – add your email to .env as EMAILJS_BCC_EMAIL) |
+| **Bcc** | `{{bcc_email}}` (optional — set `EMAILJS_BCC_EMAIL` in Secrets) |
 
-4. **Content** – set the email body:
+**Content:**
 
 ```
-A constituent has sent you a message via Reach Out and Read advocacy:
-
 {{message}}
 ```
 
-5. **Remove EmailJS footer** – In the template editor, scroll down and turn off any "Footer" or "Signature" option that adds "Email sent via EmailJS.com". If present, delete that text from the template.
+Disable EmailJS footer/signature clutter in the template editor.
 
-6. **Save** the template
-7. Copy the **Template ID** (e.g. `template_xyz789`) – this becomes `EMAILJS_TEMPLATE_ID` in `index.html`
+Save → copy **Template ID** → `EMAILJS_TEMPLATE_ID`
 
 ---
 
 ## Step 3b (Optional): Admin Email Alert Template
 
-Get an email each time someone successfully sends an advocacy message.
-
-1. Go to [Email Templates](https://dashboard.emailjs.com/admin/templates)
-2. Click **Create New Template**
-3. **To Email**: Set to your admin email (fixed in template)
-4. **Subject**: e.g. `New advocacy email sent: {{sender_name}}`
-5. **Content** (or Body):
-
-```
-Someone sent an advocacy email via the campaign:
-
-Sender: {{sender_name}} ({{sender_email}})
-Sent to: {{legislators}}
-Recipient emails: {{recipient_emails}}
-Date: {{date}}
-```
-
-6. Use the same **Email Service** as your main advocacy template
-7. **Save** and copy the **Template ID** → `EMAILJS_ADMIN_TEMPLATE_ID`
-
-Add to `.env` and GitHub Secrets: `EMAILJS_ADMIN_TEMPLATE_ID=template_abc123`
-
-**Important:** If notifications don't arrive, ensure `EMAILJS_ADMIN_TEMPLATE_ID` is set in GitHub Secrets (repo Settings → Secrets). The site sends the main email first, then your notification ~1.2 seconds later to avoid EmailJS rate limits. Check the browser console (F12) for errors if it still fails.
+Create a second template wired to `EMAILJS_ADMIN_TEMPLATE_ID`; body can reference `sender_name`, `sender_email`, `legislators` (Council member name), `recipient_emails`, `date`.
 
 ---
 
-## Step 3c (Optional): BCC Yourself a Copy of Each Advocacy Email
+## Step 3c (Optional): BCC Yourself
 
-Get a BCC copy of every email sent to legislators (so you can verify delivery and keep a record).
-
-1. In your main advocacy **Email Template**, add the **Bcc** field and set it to `{{bcc_email}}`
-2. Add to `.env`: `EMAILJS_BCC_EMAIL=your@email.com`
-3. Add to **GitHub Secrets** (repo → Settings → Secrets → Actions): `EMAILJS_BCC_EMAIL` = your email
+Add `bcc_email` to the main template; set `EMAILJS_BCC_EMAIL` in Secrets.
 
 ---
 
-## Step 4: Update Your Site's CONFIG
+## Step 4: CONFIG / build injection
 
-In `index.html`, find the CONFIG object (around line 829) and replace the placeholders with your real values:
+Secrets are injected at build time (`build.js`). Locally copy `.env.example` → `.env` and run `npm run build`.
 
-```javascript
-const CONFIG = {
-  EMAILJS_PUBLIC_KEY:  'your_actual_public_key',
-  EMAILJS_SERVICE_ID:  'your_service_id',      // e.g. 'service_advocacy'
-  EMAILJS_TEMPLATE_ID: 'your_template_id',     // e.g. 'template_xyz789'
-  OPEN_STATES_API_KEY: '...',                  // open.pluralpolicy.com – legislator lookup
-};
-```
+GitHub Actions needs: `GOOGLE_CIVIC_API_KEY`, `EMAILJS_PUBLIC_KEY`, `EMAILJS_SERVICE_ID`, `EMAILJS_TEMPLATE_ID`, plus optional admin/BCC/Supabase secrets.
 
-**Open States API key** (for legislator lookup): Register at [open.pluralpolicy.com](https://open.pluralpolicy.com/accounts/profile/) to get an API key. Geocoding uses Photon (free); Open States provides legislator data.
+Remove obsolete **`OPEN_STATES_API_KEY`** from repo Actions secrets if still present.
 
 ---
 
-## Step 5 (Optional): Restrict Domains for Security
+## Step 5 (Optional): Restrict Domains
 
-1. In the EmailJS dashboard, go to **Account** > **Security**
-2. Add your site domains (e.g. Advocacy 2: `rorgny2.goinggreen.earth`, or Advocacy 1: `rorgny.goinggreen.earth`) to the allowed list
-
----
-
-## Summary Checklist
-
-| Step | Where | What to do |
-|------|-------|------------|
-| 1 | Account > API Keys | Copy **Public Key** |
-| 2 | Email Services | Add Gmail/Outlook/transactional service; note **Service ID** |
-| 3 | Email Templates | Create template with `{{to_email}}`, `{{message}}`, `{{reply_to}}`, etc.; note **Template ID** |
-| 4 | index.html CONFIG | Replace placeholders with the three IDs above |
-| 5 | Account > Security | (Optional) Add allowed domains |
+**Account → Security:** allow **`https://city.goinggreen.earth`** (add `http://` only if needed before HTTPS propagates).
 
 ---
 
-## Testing the Integration
+## Testing
 
-1. **Set your real credentials** in `index.html` CONFIG (Public Key, Service ID, Template ID).
-2. **Add a test email** to CONFIG:
-   ```javascript
-   TEST_EMAIL: 'your@email.com',
-   ```
-3. **Open the site** with `?test=1` in the URL (e.g. `https://yoursite.com/?test=1` or `http://localhost:8080/?test=1`).
-4. **Fill out the form**, verify your address, and click "Send my message to Albany."
-5. **Check your inbox** – the email should arrive at the address in `TEST_EMAIL`, not at legislators.
-6. **Verify**: From is `rorgnyadvocacy@goinggreen.earth`, Reply-To is your form email, and the message body looks correct.
-7. **Go live**: Remove or comment out `TEST_EMAIL`, and use the site without `?test=1` for real sends.
+1. Build with real `.env`, or rely on injected Secrets after deploy.
+2. Set `TEST_EMAIL` in `index.html`, open with `?test=1`.
+3. Verify NYC address → Council lookup → click **Send email to your Council Member** — message should arrive at `TEST_EMAIL`, not at the Council address.
+
+Google Cloud: enable **Google Civic Information API** for the API key’s project.
 
 ---
 
 ## Notes
 
-- **Rate limit**: EmailJS allows about 1 request per second on the free tier.
-- **Multiple recipients**: The site sends `to_email` as a comma-separated string; most providers accept this.
-- **Demo mode**: Until you set valid EmailJS values, the site runs in demo mode and simulates success without sending real emails.
+- EmailJS free tier ~1 req/s; admin notification waits ~1.2s after main send.

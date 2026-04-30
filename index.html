@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tell Albany: Fund Children's Literacy | Reach Out and Read of Greater New York</title>
+  <title>Tell City Hall: NYC Budget & Children's Literacy | Reach Out and Read of Greater New York</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -665,10 +665,10 @@
     </nav>
 
     <div class="hero-inner">
-      <span class="hero-eyebrow fade-in">Take Action · New York State Budget for 2026-2027</span>
+      <span class="hero-eyebrow fade-in">Take Action · NYC City Budget · Early Literacy</span>
       <h1 class="fade-in">Fight for the right to read.</h1>
       <p class="hero-sub fade-in">
-        New York families need state funding for childhood literacy. With two clicks, you can ask your Assembly Member and State Senator to support Reach Out and Read.
+        New York families need city support for childhood literacy. With two clicks, you can email your NYC Council Member and ask them to prioritize Reach Out and Read in the city budget process at City Hall.
       </p>
       <div class="hero-stats">
         <div class="stat fade-in">
@@ -691,13 +691,13 @@
   <div class="header-right" id="take-action">
     <div id="form-wrapper">
       <div id="test-mode-banner" class="status-msg" style="display:none; margin-bottom:16px; background:rgba(245,166,35,0.2); border-color:rgba(245,166,35,0.5); color:#FCD34D;">
-        &#9888; Test mode: emails will be sent to your test address, not legislators.
+        &#9888; Test mode: emails will be sent to your test address, not your Council member.
       </div>
       <div id="config-status-banner" class="status-msg" style="display:none; margin-bottom:16px; font-size:14px;"></div>
       <p class="section-label">Take Action</p>
-      <h2 class="section-heading">Send your message to Albany</h2>
+      <h2 class="section-heading">Send your message to City Hall</h2>
       <p class="section-body">
-        Enter your information below. We'll find your Assembly Member and State Senator, and we'll send them a pre-written email on your behalf — in two clicks.
+        Enter your information below. We'll find your NYC Council Member and send them a pre-written email on your behalf — in two clicks.
       </p>
 
       <form id="advocacy-form" novalidate>
@@ -725,14 +725,14 @@
             <input type="text" id="street-address" placeholder="123 Main St, Apt 4" required />
           </div>
           <div class="form-group form-group-zip">
-            <label for="zip-code">Zip code</label>
+            <label for="zip-code">NYC ZIP code</label>
             <input type="text" id="zip-code" placeholder="11201" maxlength="5" inputmode="numeric" required />
           </div>
         </div>
 
         <div class="action-buttons-row">
           <button type="button" class="action-btn verify-btn" id="verify-btn" onclick="verifyAddress()">1. Verify my address</button>
-          <button type="submit" class="action-btn send-btn" id="send-btn" disabled>2. Send email to Albany</button>
+          <button type="submit" class="action-btn send-btn" id="send-btn" disabled>2. Send email to your Council Member</button>
         </div>
 
         <!-- Address confirmation (shown after successful verification) -->
@@ -743,7 +743,7 @@
 
         <!-- Legislator display area -->
         <div class="legislator-section" id="legislator-section" style="display:none">
-          <p class="legislator-label">Your representatives who will be contacted when you click "Send email to Albany":</p>
+          <p class="legislator-label">Your Council Member who will be contacted when you click "Send email to your Council Member":</p>
           <div id="legislator-area"></div>
         </div>
         <div class="status-msg" id="lookup-status"></div>
@@ -765,8 +765,8 @@
       <div class="check">✅</div>
       <h2>Your voice has been heard!</h2>
       <p>
-        Your message has been sent to your Assembly Member and State Senator.
-        Thank you for standing up for children's literacy in New York.
+        Your message has been sent to your NYC Council Member.
+        Thank you for standing up for children's literacy across the five boroughs.
       </p>
       <div class="share-row">
         <button class="share-btn share-btn-copy" onclick="copyLink()">🔗 Copy link to share with others</button>
@@ -783,7 +783,7 @@
     <p class="section-label">Why It Matters</p>
     <h2 class="section-heading">Literacy is the foundation of everything.</h2>
     <p class="section-body">
-      Reach Out and Read of Greater New York trains pediatricians to prescribe books and reading aloud at every well-child visit from birth to age 5. Every New York child deserves a fair start — and Reach Out and Read needs the State's support.
+      Reach Out and Read of Greater New York trains pediatricians to prescribe books and reading aloud at every well-child visit from birth to age 5. Every child in New York City deserves a fair start — and the City Budget is where Council Members can translate that commitment into real funding lines.
     </p>
 
     <div class="why-grid">
@@ -819,7 +819,7 @@
     <a href="https://reachoutandreadnyc.org/" target="_blank">reachoutandreadnyc.org</a>
   </p>
   <p style="margin-top:12px; font-size:12px;">
-    This site is for advocacy purposes only. Messages are sent directly to your elected representatives.<br/>
+    This site is for advocacy purposes only. Messages are sent directly to your NYC Council Member.<br/>
     <a href="admin.html" style="opacity:0.6;">Admin</a>
   </p>
 </footer>
@@ -841,7 +841,7 @@ const CONFIG = {
   EMAILJS_TEMPLATE_ID:      '__EMAILJS_TEMPLATE_ID__',  // Injected by build from .env
   EMAILJS_ADMIN_TEMPLATE_ID:'__EMAILJS_ADMIN_TEMPLATE_ID__', // Optional: admin notification when someone sends
   EMAILJS_BCC_EMAIL:        '__EMAILJS_BCC_EMAIL__',     // Optional: BCC yourself a copy of every advocacy email
-  OPEN_STATES_API_KEY:      '__OPEN_STATES_API_KEY__',  // Injected by build from .env
+  GOOGLE_CIVIC_API_KEY:     '__GOOGLE_CIVIC_API_KEY__',  // Injected by build from .env
   SUPABASE_URL:             '__SUPABASE_URL__',        // Injected by build from .env
   SUPABASE_ANON_KEY:        '__SUPABASE_ANON_KEY__',   // Injected by build from .env
   TEST_EMAIL:               'unclejosh@gmail.com',      // Set to your email, then add ?test=1 to URL to send test there
@@ -850,7 +850,8 @@ const CONFIG = {
 // ─────────────────────────────────────────────
 // STATE
 // ─────────────────────────────────────────────
-let legislators = { assembly: null, senate: null };
+/** @type {{ name: string, role: string, email: string } | null } */
+let councilMember = null;
 let verifiedAddressDisplay = null;  // normalized address string for confirmation display
 
 // ─────────────────────────────────────────────
@@ -869,8 +870,8 @@ let verifiedAddressDisplay = null;  // normalized address string for confirmatio
       const el = document.getElementById('test-mode-banner');
       if (el) el.style.display = 'block';
     }
-    // Config status: show if Open States key is missing/placeholder (helps debug deploy issues)
-    const key = CONFIG.OPEN_STATES_API_KEY || '';
+    // Config status: Google Civic API key (helps debug deploy issues)
+    const key = CONFIG.GOOGLE_CIVIC_API_KEY || '';
     const isPlaceholder = !key || key.includes('YOUR_') || key.startsWith('__');
     const statusEl = document.getElementById('config-status-banner');
     if (statusEl) {
@@ -879,41 +880,38 @@ let verifiedAddressDisplay = null;  // normalized address string for confirmatio
         statusEl.style.background = 'rgba(220,38,38,0.2)';
         statusEl.style.borderColor = 'rgba(220,38,38,0.5)';
         statusEl.style.color = '#fca5a5';
-        statusEl.innerHTML = '&#9888; Open States API key not configured. Legislator lookup will fail. If this is the live site, set Pages source to <strong>GitHub Actions</strong> in repo Settings → Pages, and ensure <code>OPEN_STATES_API_KEY</code> is in repo Secrets.';
+        statusEl.innerHTML = '&#9888; Google Civic API key not configured. Council lookup will use demo mode. On the live site, set Pages to <strong>GitHub Actions</strong> and add <code>GOOGLE_CIVIC_API_KEY</code> in repo Secrets.';
       } else {
         statusEl.style.background = 'rgba(34,197,94,0.2)';
         statusEl.style.borderColor = 'rgba(34,197,94,0.5)';
         statusEl.style.color = '#86efac';
-        statusEl.innerHTML = '&#9989; Open States API key is configured.';
+        statusEl.innerHTML = '&#9989; Google Civic API key is configured.';
       }
     }
   }
 })();
 
 // ─────────────────────────────────────────────
-// ADDRESS HELPERS
+// ADDRESS HELPERS (NYC five boroughs ZIP ranges)
 // ─────────────────────────────────────────────
-function isNYZip(zip) {
+function isNYCZip(zip) {
   const s = zip.replace(/\D/g, '').slice(0, 5);
   if (s.length !== 5) return false;
   const prefix = parseInt(s.slice(0, 3), 10);
-  // NY: 005xx (IRS), 100-149 (main NY range)
-  return (s.startsWith('005')) || (prefix >= 100 && prefix <= 149);
+  if (prefix >= 100 && prefix <= 102) return true;
+  if (prefix === 103 || prefix === 104 || prefix === 112) return true;
+  if (prefix === 110 || prefix === 111 || prefix === 113 || prefix === 114 || prefix === 116) return true;
+  return false;
 }
 
-// NY zip prefix -> city for more accurate geocoding
+/** Borough/city hint for Photon + Civic formatted address */
 function cityFromZip(zip) {
   const n = parseInt(zip.slice(0, 3), 10);
   if (n >= 100 && n <= 102) return 'New York';
   if (n === 103) return 'Staten Island';
   if (n === 104) return 'Bronx';
   if (n === 112) return 'Brooklyn';
-  if (n >= 113 && n <= 114) return 'Flushing';
-  if (n >= 116 && n <= 117) return 'Jamaica';
-  if (n >= 142 && n <= 142) return 'Buffalo';
-  if (n >= 132 && n <= 132) return 'Syracuse';
-  if (n >= 146 && n <= 146) return 'Rochester';
-  if (n >= 122 && n <= 123) return 'Albany';
+  if (n === 113 || n === 114 || n === 111 || n === 110 || n === 116) return 'Queens';
   return 'New York';
 }
 
@@ -925,9 +923,21 @@ function getAddress() {
   return `${street}, ${city}, NY ${zip}`;
 }
 
+function geocodeLooksLikeNYC(props) {
+  const zip = ((props.postcode || '') + '').replace(/\D/g, '').slice(0, 5);
+  const state = ((props.state || '') + '').toUpperCase();
+  if (zip && state === 'NY' && !isNYCZip(zip)) return false;
+  const city = ((props.city || props.locality || props.name || '') + '').toLowerCase();
+  const county = ((props.county || '') + '').toLowerCase();
+  if (state && state !== 'NY' && state !== 'NEW YORK') return false;
+  if (/new york|brooklyn|queens|bronx|staten|manhattan|nyc\b/.test(city)) return true;
+  if (/richmond county|kings county|new york county|queens county|bronx county/.test(county)) return true;
+  return !!zip && isNYCZip(zip);
+}
+
 function clearAddressVerification() {
   verifiedAddressDisplay = null;
-  legislators = { assembly: null, senate: null };
+  councilMember = null;
   document.getElementById('address-confirmed').style.display = 'none';
   document.getElementById('legislator-section').style.display = 'none';
   document.getElementById('legislator-area').innerHTML = '';
@@ -938,9 +948,7 @@ function clearAddressVerification() {
 // Re-verify when user changes street or zip (invalidates confirmation)
 ['street-address', 'zip-code'].forEach(id => {
   document.getElementById(id).addEventListener('input', () => {
-    if (verifiedAddressDisplay || legislators.assembly || legislators.senate) {
-      clearAddressVerification();
-    }
+    if (verifiedAddressDisplay || councilMember) clearAddressVerification();
   });
 });
 
@@ -952,19 +960,57 @@ async function verifyAddress() {
     return;
   }
   if (zip.length < 5) {
-    showStatus('lookup-status', 'error', 'Please enter a valid 5-digit NY zip code.');
+    showStatus('lookup-status', 'error', 'Please enter a valid 5-digit NYC zip code.');
     return;
   }
-  if (!isNYZip(zip)) {
-    showStatus('lookup-status', 'error', 'Please enter a New York State zip code. This advocacy tool only reaches NY legislators.');
+  if (!isNYCZip(zip)) {
+    showStatus('lookup-status', 'error', 'This tool only accepts New York City (five boroughs) ZIP codes.');
     return;
   }
   await lookupLegislators();
 }
 
 // ─────────────────────────────────────────────
-// LEGISLATOR LOOKUP
+// NYC COUNCIL LOOKUP (Photon + Google Civic Information API)
 // ─────────────────────────────────────────────
+
+/** Fallback local part: firstname.lastname@council.nyc.gov (particles / hyphens collapsed per brief) */
+function deriveCouncilEmail(name) {
+  let raw = name.replace(/^Council(member|\s+Member)?\s*/i, '').replace(/\([^)]*\)/g, '').trim();
+  const parts = raw.split(/\s+/).filter(Boolean);
+  if (parts.length < 2) return '';
+  const last = parts.pop().toLowerCase().replace(/-/g, '').replace(/[^a-z]/g, '');
+  const first = parts.join('').toLowerCase().replace(/-/g, '').replace(/[^a-z]/g, '');
+  if (!first || !last) return '';
+  return `${first}.${last}@council.nyc.gov`;
+}
+
+/**
+ * Pick NYC Council member: locality + legislatorLowerBody (Google Civic convention for city council seats).
+ */
+function pickNYCouncilOfficial(data) {
+  const offices = data.offices || [];
+  const officials = data.officials || [];
+  function firstOfficial(office) {
+    const idxList = office.officialIndices;
+    if (!idxList?.length) return null;
+    for (const ii of idxList) {
+      const o = officials[ii];
+      if (o?.name) return { official: o, office };
+    }
+    return null;
+  }
+  for (const office of offices) {
+    const levels = office.levels || [];
+    const roles = office.roles || [];
+    if (!levels.includes('locality')) continue;
+    if (!roles.includes('legislatorLowerBody')) continue;
+    const hit = firstOfficial(office);
+    if (hit) return hit;
+  }
+  return null;
+}
+
 async function lookupLegislators() {
   const address = getAddress();
   if (!address) {
@@ -974,22 +1020,24 @@ async function lookupLegislators() {
 
   const verifyBtn = document.getElementById('verify-btn');
   verifyBtn.disabled = true;
-  showStatus('lookup-status', 'loading', '<span class="spinner"></span> Verifying address and looking up your representatives…');
+  showStatus('lookup-status', 'loading', '<span class="spinner"></span> Verifying address and finding your NYC Council Member…');
   document.getElementById('address-confirmed').style.display = 'none';
   document.getElementById('legislator-section').style.display = 'none';
   document.getElementById('legislator-area').innerHTML = '';
   document.getElementById('email-preview').style.display = 'none';
   document.getElementById('send-btn').disabled = true;
 
-  const useDemo = CONFIG.OPEN_STATES_API_KEY === 'YOUR_OPEN_STATES_API_KEY' || !CONFIG.OPEN_STATES_API_KEY;
+  const civicKey = (CONFIG.GOOGLE_CIVIC_API_KEY || '').trim();
+  const useDemo =
+    civicKey === 'YOUR_GOOGLE_CIVIC_API_KEY' || !civicKey || civicKey.startsWith('__');
   if (useDemo) {
-    // DEMO MODE: simulate a result
     await new Promise(r => setTimeout(r, 800));
-    legislators = {
-      assembly: { name: 'Assembly Member (Demo)',  role: 'NY State Assembly', email: 'demo_assembly@nyassembly.gov'  },
-      senate:   { name: 'State Senator (Demo)',    role: 'NY State Senate',   email: 'demo_senator@nysenate.gov'    },
+    councilMember = {
+      name: 'Council Member (Demo)',
+      role: 'NYC Council Member',
+      email: 'demo.councilmember@council.nyc.gov',
     };
-    verifiedAddressDisplay = document.getElementById('street-address').value + ', NY ' + document.getElementById('zip-code').value;
+    verifiedAddressDisplay = `${document.getElementById('street-address').value.trim()}, NYC ${document.getElementById('zip-code').value.trim()}`;
     showStatus('lookup-status', '', '');
     renderLegislators();
     verifyBtn.disabled = false;
@@ -999,98 +1047,69 @@ async function lookupLegislators() {
   const debug = window.location.search.includes('test=1');
 
   try {
-    // Step 1: Geocode address → lat/lng (Photon, free, no API key)
     const geoUrl = `https://photon.komoot.io/api/?q=${encodeURIComponent(address)}&limit=1`;
-    if (debug) console.log('[Step 1] Geocoding – requesting coordinates for:', address);
+    if (debug) console.log('[Step 1] Photon – geocoding:', address);
     const geoRes = await fetch(geoUrl);
     const geoData = await geoRes.json();
 
     if (!geoRes.ok || !geoData.features?.length) {
-      throw new Error('Could not verify that address. Please check your street address and 5-digit NY zip code.');
+      throw new Error('Could not verify that address. Please check your street and 5-digit NYC zip code.');
     }
 
-    const [lng, lat] = geoData.features[0].geometry.coordinates;
     const props = geoData.features[0].properties || {};
-    if (debug) console.log('[Step 1] Geocoding – OK. lat:', lat, 'lng:', lng, '| state:', props.state);
+    if (debug) console.log('[Step 1] Photon – OK', props);
 
-    // Ensure geocoded result is in NY
-    const state = (props.state || '').toUpperCase();
-    if (state && state !== 'NY' && state !== 'NEW YORK') {
-      throw new Error('That address appears to be outside New York State. This tool only reaches NY legislators.');
+    if (!geocodeLooksLikeNYC(props)) {
+      throw new Error('That address appears to be outside New York City. This tool only reaches NYC Council Members.');
     }
 
-    legislators = { assembly: null, senate: null };
-    const parts = [props.street, props.city || props.locality, props.postcode ? `NY ${props.postcode}` : 'NY'].filter(Boolean);
+    councilMember = null;
+    const parts = [props.street, props.city || props.locality, props.postcode ? `NY ${String(props.postcode).slice(0, 5)}` : null].filter(Boolean);
     verifiedAddressDisplay = parts.length ? parts.join(', ') : address;
 
-    // Step 2: Open States people.geo – lat/lng → legislators
-    // Use apikey query param (more reliable from browser than header)
-    const apiKey = CONFIG.OPEN_STATES_API_KEY || '';
-    if (debug) console.log('[Step 2] Open States – API key present:', !!apiKey, '| placeholder?', apiKey.includes('YOUR_'));
-    const geoPeopleUrl = `https://v3.openstates.org/people.geo?lat=${lat}&lng=${lng}&include=offices&apikey=${encodeURIComponent(apiKey)}`;
-    if (debug) console.log('[Step 2] Open States – fetching legislators for coordinates...');
-    const peopleRes = await fetch(geoPeopleUrl);
-    const peopleData = await peopleRes.json();
+    const civicAddress = verifiedAddressDisplay || address;
+    const key = encodeURIComponent(civicKey);
+    const civicUrl =
+      `https://www.googleapis.com/civicinfo/v2/representativeInfoByAddress?` +
+      `address=${encodeURIComponent(civicAddress)}&levels=locality&roles=legislatorLowerBody&key=${key}`;
+    if (debug) console.log('[Step 2] Google Civic – fetching representatives…');
+    const civicRes = await fetch(civicUrl);
+    const civicData = await civicRes.json();
 
-    if (!peopleRes.ok) {
-      const errDetail = peopleData.detail || peopleData.message || (typeof peopleData === 'string' ? peopleData : null);
-      throw new Error(errDetail || `Open States API error (${peopleRes.status})`);
+    if (!civicRes.ok) {
+      const msg = civicData?.error?.message || civicData?.message || JSON.stringify(civicData);
+      throw new Error(msg || `Google Civic API error (${civicRes.status})`);
     }
 
-    const results = peopleData.results || [];
-    if (debug) console.log('[Step 2] Open States – returned', results.length, 'people');
+    const picked = pickNYCouncilOfficial(civicData);
+    if (!picked) throw new Error('Could not find an NYC Council Member for that address. Please verify your street and NYC zip code.');
 
-    for (const p of results) {
-      const role = p.current_role;
-      if (!role) continue;
-      const org = (role.org_classification || '').toLowerCase();
-      const jurId = (p.jurisdiction?.id || '').toLowerCase();
-      if (!jurId.includes('ny')) continue;
+    const official = picked.official;
+    const councilName = (official.name || 'NYC Council Member').trim();
+    const emailRaw = official.emails && official.emails[0] ? String(official.emails[0]).trim() : '';
+    const email = emailRaw || deriveCouncilEmail(councilName);
+    if (!email) throw new Error('Council member resolved but email could not be determined. Try again or email via nyc.gov/council.');
 
-      if (org === 'lower' && !legislators.assembly) {
-        const email = p.email || (p.offices?.[0]?.email) || deriveEmail(p.name, true);
-        const source = p.email ? 'API' : (p.offices?.[0]?.email ? 'office' : 'derived');
-        if (debug) console.log('[Step 2] Assembly', p.name, '→', email, '(' + source + ')');
-        legislators.assembly = { name: p.name, role: 'NY State Assembly', email };
-      }
-      if (org === 'upper' && !legislators.senate) {
-        const email = p.email || (p.offices?.[0]?.email) || deriveEmail(p.name, false);
-        const source = p.email ? 'API' : (p.offices?.[0]?.email ? 'office' : 'derived');
-        if (debug) console.log('[Step 2] Senate', p.name, '→', email, '(' + source + ')');
-        legislators.senate = { name: p.name, role: 'NY State Senate', email };
-      }
-    }
-
-    if (!legislators.assembly && !legislators.senate) throw new Error('Could not find state legislators for that address. Please verify your street address and that you entered a valid NY zip code.');
+    councilMember = { name: councilName, role: 'NYC Council Member', email };
 
     showStatus('lookup-status', '', '');
     renderLegislators();
-
-  } catch(err) {
+  } catch (err) {
     verifiedAddressDisplay = null;
+    councilMember = null;
     const msg = err.message || String(err);
-    const isApiKeyError = /API key|invalid.*key|permission|forbidden|unauthorized|rate limit|401|403/i.test(msg);
+    const isApiKeyError = /API key|invalid.*key|API_KEY|permission|forbidden|unauthorized|403|dailyLimit|quota/i.test(msg);
     if (isApiKeyError) console.error('Lookup API error:', msg);
     const userMessage = isApiKeyError
       ? 'Address lookup is temporarily unavailable. Please try again later or contact the site administrator.'
-      : '❌ ' + msg + (msg.includes('zip') || msg.includes('address') ? '' : ' Please check your street address and 5-digit NY zip code.');
+      : '❌ ' + msg + (/zip|address|NYC/i.test(msg) ? '' : ' Please check your street address and NYC zip code.');
     showStatus('lookup-status', 'error', userMessage);
   }
 
   verifyBtn.disabled = false;
 }
 
-function deriveEmail(name, isAssembly) {
-  // NY legislators follow [lastname][firstinitial]@nyassembly.gov / @nysenate.gov
-  const parts = name.replace(/^(Assemblymember|Senator|Assembly Member)\s*/i, '').trim().split(/\s+/);
-  const last  = parts[parts.length - 1].toLowerCase().replace(/[^a-z]/g,'');
-  const first = parts[0][0].toLowerCase();
-  const domain = isAssembly ? 'nyassembly.gov' : 'nysenate.gov';
-  return `${last}${first}@${domain}`;
-}
-
 function renderLegislators() {
-  // Show address confirmation
   if (verifiedAddressDisplay) {
     document.getElementById('verified-address-text').textContent = 'Address verified: ' + verifiedAddressDisplay;
     document.getElementById('address-confirmed').style.display = 'flex';
@@ -1099,21 +1118,18 @@ function renderLegislators() {
   const area = document.getElementById('legislator-area');
   area.innerHTML = '';
 
-  const found = [legislators.assembly, legislators.senate].filter(Boolean);
-  if (found.length > 0) {
+  if (councilMember) {
     document.getElementById('legislator-section').style.display = 'flex';
-  }
-  found.forEach(leg => {
     const card = document.createElement('div');
     card.className = 'legislator-found';
     card.innerHTML = `
       <div class="leg-icon">🏛</div>
       <div class="leg-info">
-        <h4>${leg.name}</h4>
-        <p>${leg.role} · ${leg.email}</p>
+        <h4>${councilMember.name}</h4>
+        <p>${councilMember.role} · ${councilMember.email}</p>
       </div>`;
     area.appendChild(card);
-  });
+  }
 
   buildEmailPreview();
   document.getElementById('send-btn').disabled = false;
@@ -1122,32 +1138,22 @@ function renderLegislators() {
 // ─────────────────────────────────────────────
 // EMAIL TEMPLATE
 // ─────────────────────────────────────────────
-function buildEmailBody(senderName, legsOrNames) {
-  const legs = Array.isArray(legsOrNames) && legsOrNames.length > 0 && typeof legsOrNames[0] === 'object'
-    ? legsOrNames
-    : [legislators.assembly, legislators.senate].filter(Boolean);
-  const last = n => (n || '').trim().split(/\s+/).pop() || '';
-  const salutation = legs.map(l => {
-    const lastName = last(l.name);
-    if ((l.role || '').toLowerCase().includes('assembly')) return `Assembly Member ${lastName}`;
-    if ((l.role || '').toLowerCase().includes('senate')) return `Senator ${lastName}`;
-    return lastName || 'Legislator';
-  });
-  const greeting = salutation.length === 0
-    ? 'Dear Legislator,'
-    : `Dear ${salutation.join(' and ')},`;
+function buildEmailBody(senderName, recipientOrNull) {
+  const leg = recipientOrNull || councilMember;
+  const lastName = (leg?.name || '').trim().split(/\s+/).pop() || '';
+  const greeting = leg ? `Dear Council Member ${lastName},` : 'Dear Council Member,';
 
   return `${greeting}
 
-My name is ${senderName}, and I am a constituent writing to urge you to support $3 million in dedicated state funding for Reach Out and Read in the New York State Budget.
+My name is ${senderName}, and I am a constituent writing during the NYC budget process at City Hall. I am urging you to support strong, steady funding lines for Reach Out and Read and other evidence-based early childhood literacy programs.
 
-Reach Out and Read works with pediatricians and health centers to make reading a natural part of caring for young children. During regular checkups, doctors give families a new, high-quality book and share simple, practical guidance about reading aloud at home. This trusted, relationship-based approach reaches families early—often from birth—and helps support language development, strengthen parent-child connections, and set children up for success once they enter school.
+[Placeholder — final dollar amounts / program lines will be finalized with your coalition.]
 
-Reach Out and Read currently serves over 300,000 children across 340 clinics in New York State, but 95 clinics remain on a waitlist due to funding constraints. This $3 million investment would allow the program to expand to these sites statewide, reaching children in underserved communities at a cost of just $20 per child per year.
+Reach Out and Read works with pediatricians and Federally Qualified Health Centers to give families a developmentally tuned book at well-child visits plus guidance about reading aloud. For New York City's youngest children—especially families facing economic stress—it is high-leverage preventive care with effects that ripple into school readiness and long-term taxpayer savings.
 
-Investment in early literacy pays for itself many times over: research shows that every dollar spent on early childhood programs returns seven or more through reduced special education costs, lower grade repetition rates, and better lifetime outcomes. New York State cannot afford not to act.
+City Council oversight and budget allocations play a decisive role in whether programs like Reach Out and Read can deepen coverage in underserved communities. I hope you will use your influence in this cycle to prioritize and protect literacy investments that strengthen families and lighten demand on remediation services later.
 
-Thank you for your service and your commitment to New York families.
+Thank you for representing our district during the city's budget debates.
 
 Sincerely,
 ${senderName}`;
@@ -1158,29 +1164,29 @@ function buildEmailPreview() {
   const lastName  = document.getElementById('last-name').value  || 'Name';
   const senderName = `${firstName} ${lastName}`.trim();
 
-  const legs = [legislators.assembly, legislators.senate].filter(Boolean);
-  const legNames = legs.map(l => l.name);
-  document.getElementById('recipient-preview').textContent = `To: ${legNames.join(' and ')}`;
+  document.getElementById('recipient-preview').textContent = councilMember
+    ? `To: ${councilMember.name}`
+    : 'To: (verify address above)';
 
-  // In test mode, show actual email addresses so you can verify against official sites
   const verifyEl = document.getElementById('recipient-emails-verify');
-  if (window.location.search.includes('test=1') && legs.length > 0) {
+  if (window.location.search.includes('test=1') && councilMember) {
     verifyEl.style.display = 'block';
-    const emails = legs.map(l => `${l.name}: ${l.email}`).join(' | ');
-    verifyEl.innerHTML = `Addresses: ${emails} — <a href="https://assembly.state.ny.us/mem/" target="_blank" rel="noopener">Verify Assembly</a> · <a href="https://www.nysenate.gov/senators-committees" target="_blank" rel="noopener">Verify Senate</a>`;
+    verifyEl.innerHTML =
+      `${councilMember.name}: ${councilMember.email} — ` +
+      '<a href="https://council.nyc.gov/districts/" target="_blank" rel="noopener">NYC Council districts directory</a> · ' +
+      '<a href="https://council.nyc.gov/council-members/" target="_blank" rel="noopener">Council members roster</a>';
   } else {
     verifyEl.style.display = 'none';
   }
 
-  const body = buildEmailBody(senderName, legs);
+  const body = buildEmailBody(senderName, councilMember);
   document.getElementById('email-body-preview').textContent = body;
   document.getElementById('email-preview').style.display = 'block';
 }
 
-// Update preview as user types name
 ['first-name','last-name'].forEach(id => {
   document.getElementById(id).addEventListener('input', () => {
-    if (legislators.assembly || legislators.senate) buildEmailPreview();
+    if (councilMember) buildEmailPreview();
   });
 });
 
@@ -1199,7 +1205,7 @@ document.getElementById('advocacy-form').addEventListener('submit', async functi
     return;
   }
 
-  if (!legislators.assembly && !legislators.senate) {
+  if (!councilMember) {
     showStatus('send-status', 'error', '❌ Please verify your address first using the "Verify my address" button.');
     return;
   }
@@ -1210,18 +1216,17 @@ document.getElementById('advocacy-form').addEventListener('submit', async functi
   showStatus('send-status', '', '');
 
   const senderName  = `${firstName} ${lastName}`;
-  const legs        = [legislators.assembly, legislators.senate].filter(Boolean);
-  const emailBody   = buildEmailBody(senderName, legs);
-  let recipients    = [legislators.assembly?.email, legislators.senate?.email].filter(Boolean).join(', ');
-  let legNamesStr   = legs.map(l => l.name).join(' and ');
+  const emailBody   = buildEmailBody(senderName, councilMember);
+  let recipients    = councilMember.email;
+  let legNamesStr   = councilMember.name;
 
-  // Test mode: add ?test=1 to URL and set CONFIG.TEST_EMAIL to send to yourself instead of legislators
+  // Test mode: add ?test=1 to URL and set CONFIG.TEST_EMAIL to send to yourself instead of your Council member
   if (window.location.search.includes('test=1') && CONFIG.TEST_EMAIL) {
     recipients = CONFIG.TEST_EMAIL;
     legNamesStr = 'Test Recipient';
-    console.log('[Step 3] Email – test mode: sending to', CONFIG.TEST_EMAIL, 'instead of legislators');
+    console.log('[Step 3] Email – test mode: sending to', CONFIG.TEST_EMAIL, 'instead of Council member');
   } else {
-    console.log('[Step 3] Email – sending to legislators:', recipients);
+    console.log('[Step 3] Email – sending to:', recipients);
   }
 
   // Check if EmailJS is configured
@@ -1276,8 +1281,8 @@ document.getElementById('advocacy-form').addEventListener('submit', async functi
   } catch(err) {
     if (window.location.search.includes('test=1')) console.error('[Step 3] Email – failed:', err.text || err.message);
     btn.disabled = false;
-    btn.innerHTML = '2. Send email to Albany';
-    const subject = 'Constituent message: Support childhood literacy funding';
+    btn.innerHTML = '2. Send email to your Council Member';
+    const subject = 'Constituent message: NYC budget & childhood literacy funding';
     const toAddresses = recipients.split(',').map(s => s.trim()).join(', ');
     const mailtoHref = 'mailto:' + toAddresses +
       '?subject=' + encodeURIComponent(subject) +

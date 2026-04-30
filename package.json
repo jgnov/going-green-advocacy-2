@@ -1,7 +1,7 @@
 {
   "name": "going-green-advocacy-2",
   "version": "1.0.0",
-  "description": "Going Green Advocacy 2 — legislator outreach (NY)",
+  "description": "Going Green Advocacy 2 — NYC Council city-budget outreach (Photon + Google Civic)",
   "scripts": {
     "build": "node build.js",
     "preview": "npm run build && npx serve dist -p 8080"
