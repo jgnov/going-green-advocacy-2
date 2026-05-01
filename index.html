@@ -111,12 +111,34 @@
       text-decoration: none;
     }
 
+    .nav-logo-stack {
+      position: relative;
+      display: inline-block;
+      line-height: 0;
+    }
+
     .nav-logo-img {
       height: 110px;
       width: auto;
       max-width: 420px;
       object-fit: contain;
       display: block;
+    }
+
+    .nav-logo-tagline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 5px;
+      text-align: center;
+      color: var(--white);
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+      pointer-events: none;
     }
 
     /* ── HERO CONTENT ── */
@@ -639,6 +661,7 @@
       .hero-stats .stat-num { font-size: 24px; }
       .hero-stats .stat-label { font-size: 10px; max-width: none; }
       .nav-logo-img { height: 80px; max-width: 300px; }
+      .nav-logo-tagline { font-size: 10px; bottom: 3px; letter-spacing: 0.03em; }
       .legislator-section { flex-direction: column; gap: 12px; }
       .legislator-label { width: 100%; }
       #legislator-area { max-width: none; }
@@ -670,7 +693,10 @@
   <div class="header-left">
     <nav class="nav">
     <a href="https://reachoutandreadnyc.org" class="nav-logo" target="_blank" rel="noopener">
-      <img src="https://reachoutandreadnyc.org/wp-content/themes/elevation_theme/assets/images/logo.png" alt="Reach Out and Read of Greater New York" class="nav-logo-img" />
+      <span class="nav-logo-stack">
+        <img src="https://reachoutandreadnyc.org/wp-content/themes/elevation_theme/assets/images/logo.png" alt="Reach Out and Read of Greater New York" class="nav-logo-img" />
+        <span class="nav-logo-tagline" aria-hidden="true">Greater New York</span>
+      </span>
     </a>
     </nav>
 
